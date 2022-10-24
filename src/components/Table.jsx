@@ -50,9 +50,9 @@ export default function Table({ tableProp }) {
       ]
     })
 
-    const ee = new Entry(name, pe, pp, pe / pp)
-    const storeEntry = [...entries, ee] //spreading and add e
-    setEntries(storeEntry)
+    // const ee = new Entry(name, pe, pp, pe / pp)
+    // const storeEntry = [...entries, ee] //spreading and add e
+    // setEntries(storeEntry)
 
     entryNameRef.current.value = null
     entryPERef.current.value = null
