@@ -47,7 +47,7 @@ export default function Table({ tableProp }) {
           name: name,
           pointsEarned: npe,
           pointsPossible: npp,
-          percent: calculationPercent(npe, npp),
+          percent: calculationPercent(npe, npp) * 100 + '%',
         },
       ]
     })
@@ -71,9 +71,10 @@ export default function Table({ tableProp }) {
       totalEarned += entry.pointsEarned
       totalPossible += entry.pointsPossible
     }
-    console.log(totalEarned)
-    console.log(totalPossible)
+    // console.log(totalEarned)
+    // console.log(totalPossible)
     let _gradePercent = totalEarned / totalPossible
+    if (_gradePercent < 0.6) setGradeLetter('F')
     if (_gradePercent >= 0.6) setGradeLetter('D')
     if (_gradePercent >= 0.67) setGradeLetter('D+')
     if (_gradePercent >= 0.7) setGradeLetter('C-')
@@ -101,6 +102,8 @@ export default function Table({ tableProp }) {
       <input ref={entryPPRef} type="number" />
 
       <br></br>
+      <br></br>
+
       <button onClick={handleAddEntry}>Add Assignment/Quiz/Exam </button>
       <br></br>
       <br></br>
