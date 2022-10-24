@@ -35,7 +35,9 @@ export default function Table({ tableProp }) {
     const name = entryNameRef.current.value
     const pe = entryPERef.current.value
     const pp = entryPPRef.current.value
-    if (name === '' || pe === '' || pp === '') return
+    const npe = parseInt(pe, 10)
+    const npp = parseInt(pp, 10)
+    if (name === '' || npe === '' || npp === '') return
     setEntries((prevEntries) => {
       return [
         ...prevEntries,
@@ -43,9 +45,9 @@ export default function Table({ tableProp }) {
         {
           id: uuidv4(),
           name: name,
-          pointsEarned: pe,
-          pointsPossible: pp,
-          percent: calculationPercent(pe, pp),
+          pointsEarned: npe,
+          pointsPossible: npp,
+          percent: calculationPercent(npe, npp),
         },
       ]
     })
@@ -69,6 +71,8 @@ export default function Table({ tableProp }) {
       totalEarned += entry.pointsEarned
       totalPossible += entry.pointsPossible
     }
+    console.log(totalEarned)
+    console.log(totalPossible)
     let _gradePercent = totalEarned / totalPossible
     if (_gradePercent >= 0.6) setGradeLetter('D')
     if (_gradePercent >= 0.67) setGradeLetter('D+')
@@ -90,7 +94,7 @@ export default function Table({ tableProp }) {
       <p>Overall Grade Letter: {gradeLetter} </p>
       <br></br>
       <p>Name of added entry:</p>
-      <input ref={entryNameRef} type="text" autocomplete="off" />
+      <input ref={entryNameRef} type="text" autoComplete="off" />
       <p>Points earned of entry</p>
       <input ref={entryPERef} type="number" />
       <p>Points possible of entry</p>
