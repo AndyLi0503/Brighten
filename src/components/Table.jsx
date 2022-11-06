@@ -49,7 +49,7 @@ export default function Table({ tableProp }) {
           name: name,
           pointsEarned: npe,
           pointsPossible: npp,
-          percent: calculationPercent(npe, npp) * 100 + '%',
+          percent: (Math.round((npe / npp) * 100 * 100) / 100).toFixed(2) + '%',
         },
       ]
     })
@@ -59,9 +59,6 @@ export default function Table({ tableProp }) {
     entryPPRef.current.value = null
   }
 
-  function calculationPercent(pe, pp) {
-    return pe / pp
-  }
   function calculationTotal() {
     let totalEarned = 0
     let totalPossible = 0
@@ -99,7 +96,22 @@ export default function Table({ tableProp }) {
       newName,
       newPE,
       newPP,
-      Math.round((newPE / newPP) * 100) + '%'
+      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%'
+    )
+    newEntries[index] = ne
+    setEntries(newEntries)
+  }
+
+  const handlePredict = (id, newPE, newPP, target) => {
+    const newEntries = [...entries]
+    const index = entries.findIndex((entry) => entry.id === id)
+    const name = entries[index].name
+    const ne = new Entry(
+      id,
+      name,
+      newPE,
+      newPP,
+      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%'
     )
     newEntries[index] = ne
     setEntries(newEntries)
@@ -111,12 +123,15 @@ export default function Table({ tableProp }) {
 
   return (
     <>
-      <p>Overall Grade Percent: {gradePercent * 100}%</p>
-      <p>Overall Grade Letter: {gradeLetter} </p>
+      <p className="font-mono">
+        Overall Grade Percent:{' '}
+        {(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}%
+      </p>
+      <p className="font-mono">Overall Grade Letter: {gradeLetter} </p>
       <br></br>
 
-      <div className="grid grid-cols-3 gap-4 content-center">
-        <table className="table-auto">
+      <div>
+        <table className="table-auto border-separate border-spacing-5 border border-slate-400">
           <thead className="text-center">
             <tr>
               <th className="table-header">Name</th>
@@ -132,6 +147,7 @@ export default function Table({ tableProp }) {
                 entryProp={entryObject}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                handlePredict={handlePredict}
                 key={entryObject.id}
               />
             ))}
@@ -141,11 +157,11 @@ export default function Table({ tableProp }) {
 
       <br></br>
 
-      <p>Name of added entry:</p>
+      <p className="font-mono">Name of added entry:</p>
       <input ref={entryNameRef} type="text" autoComplete="off" />
-      <p>Points earned of entry</p>
+      <p className="font-mono">Points earned of entry:</p>
       <input ref={entryPERef} type="number" />
-      <p>Points possible of entry</p>
+      <p className="font-mono">Points possible of entry:</p>
       <input ref={entryPPRef} type="number" />
 
       <br></br>
@@ -153,7 +169,7 @@ export default function Table({ tableProp }) {
 
       <button
         onClick={handleAddEntry}
-        class="bg-orange-300 hover:bg-orange-400 rounded-full"
+        className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Add Assignment/Quiz/Exam{' '}
       </button>
@@ -161,7 +177,7 @@ export default function Table({ tableProp }) {
       <br></br>
       <button
         onClick={handleRevertInit}
-        class="bg-orange-300 hover:bg-orange-400 rounded-full"
+        className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Revert to Initial Entries
       </button>
