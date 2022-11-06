@@ -34,12 +34,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
   }, [entryNameRef, entryPERef, entryPPRef, entryProp, isEditing])
 
   useEffect(() => {
-    if (
-      entryNameRef.current !== undefined &&
-      entryPERef.current !== undefined &&
-      entryPPRef.current !== undefined &&
-      isPredicting
-    ) {
+    if (isPredicting) {
       entryPERef.current.value = entryProp.pointsEarned
       entryPPRef.current.value = entryProp.pointsPossible
     }
@@ -101,7 +96,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
   } else if (isPredicting && !isEditing) {
     return (
       <tr>
-        <td>{entryProp.name}</td>
+        <td className="font-mono">{entryProp.name}</td>
         <td>
           <input ref={entryPERef} type="number" />
         </td>
