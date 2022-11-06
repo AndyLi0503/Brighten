@@ -77,6 +77,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <input ref={entryPPRef} type="number" />
         </td>
+        <td></td>
         <td>
           <button
             onClick={handleOnClickX}
@@ -107,6 +108,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <input ref={entryPPRef} type="number" />
         </td>
+        <td></td>
         <td>
           <button
             onClick={handleOnClickX}
@@ -116,6 +118,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
             X{' '}
           </button>
         </td>
+        <td></td>
         <td>
           <button
             onClick={handleOnClickEnd}
