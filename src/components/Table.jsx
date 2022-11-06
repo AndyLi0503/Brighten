@@ -9,15 +9,16 @@ export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
   const [entries, setEntries] = useState([])
   const [gradeLetter, setGradeLetter] = useState('F')
+  const [entriesInit, setEntriesInit] = useState([])
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
   useEffect(function () {
     calculationTotal()
-    const e1 = new Entry('Midterm 1', 76, 100, 0.76)
-    const e2 = new Entry('Midterm 2', 94, 100, 0.94)
-    const e3 = new Entry('Midterm 3', 80, 100, 0.8)
-    const e4 = new Entry('Final', 190, 200, 0.95)
+    const e1 = new Entry(uuidv4(), 'Midterm 1', 76, 100, '76.00%')
+    const e2 = new Entry(uuidv4(), 'Midterm 2', 94, 100, '94.00%')
+    const e3 = new Entry(uuidv4(), 'Midterm 3', 80, 100, '80.00%')
+    const e4 = new Entry(uuidv4(), 'Final', 190, 200, '95.00%')
 
     const arr = []
     arr.push(e1)
@@ -25,6 +26,7 @@ export default function Table({ tableProp }) {
     arr.push(e3)
     arr.push(e4)
     setEntries(arr)
+    setEntriesInit(arr)
   }, [])
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function Table({ tableProp }) {
     const pp = entryPPRef.current.value
     const npe = parseInt(pe, 10)
     const npp = parseInt(pp, 10)
-    if (name === '' || npe === '' || npp === '') return
+    if (name === '' || pe === '' || pp === '') return
     setEntries((prevEntries) => {
       return [
         ...prevEntries,
@@ -51,10 +53,6 @@ export default function Table({ tableProp }) {
         },
       ]
     })
-
-    // const ee = new Entry(name, pe, pp, pe / pp)
-    // const storeEntry = [...entries, ee] //spreading and add e
-    // setEntries(storeEntry)
 
     entryNameRef.current.value = null
     entryPERef.current.value = null
@@ -71,8 +69,7 @@ export default function Table({ tableProp }) {
       totalEarned += entry.pointsEarned
       totalPossible += entry.pointsPossible
     }
-    // console.log(totalEarned)
-    // console.log(totalPossible)
+
     let _gradePercent = totalEarned / totalPossible
     if (_gradePercent < 0.6) setGradeLetter('F')
     if (_gradePercent >= 0.6) setGradeLetter('D')
@@ -89,24 +86,35 @@ export default function Table({ tableProp }) {
     setGradePercent(_gradePercent)
   }
 
+  const handleDelete = (id) => {
+    const matched = entries.filter((entry) => entry.id !== id)
+    setEntries(matched)
+  }
+
+  const handleEdit = (id, newName, newPE, newPP) => {
+    const newEntries = [...entries]
+    const index = entries.findIndex((entry) => entry.id === id)
+    const ne = new Entry(
+      id,
+      newName,
+      newPE,
+      newPP,
+      Math.round((newPE / newPP) * 100) + '%'
+    )
+    newEntries[index] = ne
+    setEntries(newEntries)
+  }
+
+  const handleRevertInit = (e) => {
+    setEntries(entriesInit)
+  }
+
   return (
     <>
       <p>Overall Grade Percent: {gradePercent * 100}%</p>
       <p>Overall Grade Letter: {gradeLetter} </p>
       <br></br>
-      <p>Name of added entry:</p>
-      <input ref={entryNameRef} type="text" autoComplete="off" />
-      <p>Points earned of entry</p>
-      <input ref={entryPERef} type="number" />
-      <p>Points possible of entry</p>
-      <input ref={entryPPRef} type="number" />
 
-      <br></br>
-      <br></br>
-
-      <button onClick={handleAddEntry}>Add Assignment/Quiz/Exam </button>
-      <br></br>
-      <br></br>
       <div className="grid grid-cols-3 gap-4 content-center">
         <table className="table-auto">
           <thead className="text-center">
@@ -120,11 +128,45 @@ export default function Table({ tableProp }) {
 
           <tbody className="text-center">
             {entries.map((entryObject) => (
-              <EntryComponent entryProp={entryObject} key={entryObject.name} />
+              <EntryComponent
+                entryProp={entryObject}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+                key={entryObject.id}
+              />
             ))}
           </tbody>
         </table>
       </div>
+
+      <br></br>
+
+      <p>Name of added entry:</p>
+      <input ref={entryNameRef} type="text" autoComplete="off" />
+      <p>Points earned of entry</p>
+      <input ref={entryPERef} type="number" />
+      <p>Points possible of entry</p>
+      <input ref={entryPPRef} type="number" />
+
+      <br></br>
+      <br></br>
+
+      <button
+        onClick={handleAddEntry}
+        class="bg-orange-300 hover:bg-orange-400 rounded-full"
+      >
+        Add Assignment/Quiz/Exam{' '}
+      </button>
+      <br></br>
+      <br></br>
+      <button
+        onClick={handleRevertInit}
+        class="bg-orange-300 hover:bg-orange-400 rounded-full"
+      >
+        Revert to Initial Entries
+      </button>
+      <br></br>
+      <br></br>
     </>
   )
 }
