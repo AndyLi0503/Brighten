@@ -1,7 +1,13 @@
-import { entries } from '../constants'
+import { entries } from './Table'
 import { useState, useEffect, useRef } from 'react'
 
-function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
+function Entry({
+  entryProp,
+  handleDelete,
+  handleEdit,
+  // handlePredict,
+  handleEnd,
+}) {
   const [isEditing, setIsEditing] = useState(false)
   const [isPredicting, setIsPredicting] = useState(false)
   const entryNameRef = useRef()
@@ -50,13 +56,34 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
     )
   }
 
+  const handleOnTargetChange = () => {
+    let totalEarned = 0
+    let totalPossible = 0
+    for (const entry of entries) {
+      totalEarned += entry.pointsEarned
+      totalPossible += entry.pointsPossible
+      console.log(entry.pointsEarned)
+    }
+
+    totalEarned -= entryPERef.current.value
+    let totalNeeded =
+      totalPossible * (parseInt(entryTargetRef.current.value) / 100)
+    entryPERef.current.value = totalNeeded
+
+    // handlePredict(
+    //   entryProp.id,
+    //   parseInt(entryPERef.current.value),
+    //   parseInt(entryPPRef.current.value),
+    //   parseInt(entryTargetRef.current.value)
+    // )
+  }
+
   const handleOnClickEnd = () => {
     setIsPredicting(false)
-    handlePredict(
+    handleEnd(
       entryProp.id,
       parseInt(entryPERef.current.value),
-      parseInt(entryPPRef.current.value),
-      parseInt(entryTargetRef.current.value)
+      parseInt(entryPPRef.current.value)
     )
   }
 
@@ -85,7 +112,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <button
             onClick={handleOnClickSave}
-            className="bg-amber-400 hover:bg-amber-600"
+            className="bg-amber-400 hover:bg-amber-600 rounded-full"
           >
             {' '}
             Save{' '}
@@ -117,7 +144,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <button
             onClick={handleOnClickEnd}
-            className="bg-yellow-200 hover:bg-yellow-400"
+            className="bg-yellow-200 hover:bg-yellow-400 rounded-full"
           >
             {' '}
             End{' '}
@@ -125,7 +152,11 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         </td>
         <td>Desired:</td>
         <td>
-          <input ref={entryTargetRef} type="number" />
+          <input
+            onChange={handleOnTargetChange}
+            ref={entryTargetRef}
+            type="number"
+          />
         </td>
         <td>%</td>
       </tr>
@@ -148,7 +179,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <button
             onClick={handleOnClickEdit}
-            className="bg-amber-400 hover:bg-amber-600"
+            className="bg-amber-400 hover:bg-amber-600 rounded-full"
           >
             Edit
           </button>
@@ -156,7 +187,7 @@ function Entry({ entryProp, handleDelete, handleEdit, handlePredict }) {
         <td>
           <button
             onClick={handleOnClickPredict}
-            className="bg-yellow-200 hover:bg-yellow-400"
+            className="bg-yellow-200 hover:bg-yellow-400 rounded-full"
           >
             Predict
           </button>

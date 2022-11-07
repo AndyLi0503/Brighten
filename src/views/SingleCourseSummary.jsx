@@ -10,7 +10,6 @@ function SingleCourseSummary() {
   return (
     <div>
       <CourseTitle />
-
       <Table />
     </div>
   )

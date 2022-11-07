@@ -13,6 +13,7 @@ export default function Table({ tableProp }) {
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
+  const entryTargetRef = useRef()
   useEffect(function () {
     calculationTotal()
     const e1 = new Entry(uuidv4(), 'Midterm 1', 76, 100, '76.00%')
@@ -89,6 +90,7 @@ export default function Table({ tableProp }) {
   }
 
   const handleEdit = (id, newName, newPE, newPP) => {
+    if (newName === '' || newPE === '' || newPP === '') return
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
     const ne = new Entry(
@@ -102,7 +104,20 @@ export default function Table({ tableProp }) {
     setEntries(newEntries)
   }
 
-  const handlePredict = (id, newPE, newPP, target) => {
+  // const handlePredict = (id, PE, PP, target) => {
+  //   let totalEarned = 0
+  //   let totalPossible = 0
+  //   for (const entry of entries) {
+  //     totalEarned += entry.pointsEarned
+  //     totalPossible += entry.pointsPossible
+  //   }
+  //   const index = entries.findIndex((entry) => entry.id === id)
+  //   totalEarned -= PE
+  //   let totalNeeded = totalPossible * (target / 100)
+  //   entryPERef.current.value = totalNeeded
+  // }
+
+  const handleEnd = (id, newPE, newPP) => {
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
     const name = entries[index].name
@@ -147,7 +162,8 @@ export default function Table({ tableProp }) {
                 entryProp={entryObject}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
-                handlePredict={handlePredict}
+                // handlePredict={handlePredict}
+                handleEnd={handleEnd}
                 key={entryObject.id}
               />
             ))}
