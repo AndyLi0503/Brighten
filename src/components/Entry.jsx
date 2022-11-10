@@ -1,15 +1,16 @@
-import { entries } from './Table'
 import { useState, useEffect, useRef } from 'react'
 
 function Entry({
   entryProp,
   handleDelete,
   handleEdit,
-  // handlePredict,
   handleEnd,
+  entriesProp,
 }) {
   const [isEditing, setIsEditing] = useState(false)
   const [isPredicting, setIsPredicting] = useState(false)
+  const [pointsEarnedState, setPEState] = useState()
+  const [pointsPossibleState, setPPState] = useState()
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
@@ -40,11 +41,14 @@ function Entry({
   }, [entryNameRef, entryPERef, entryPPRef, entryProp, isEditing])
 
   useEffect(() => {
-    if (isPredicting) {
-      entryPERef.current.value = entryProp.pointsEarned
-      entryPPRef.current.value = entryProp.pointsPossible
+    if (isPredicting && entryTargetRef.current) {
+      setPEState(entryProp.pointsEarned)
+      setPPState(entryProp.pointsPossible)
+      // entryPERef.current.value = entryProp.pointsEarned
+      // entryPPRef.current.value = entryProp.pointsPossible
+      console.log(entryProp)
     }
-  }, [entryNameRef, entryPERef, entryPPRef, entryProp, isPredicting])
+  }, [entryProp, entryTargetRef, isPredicting])
 
   const handleOnClickSave = () => {
     setIsEditing(false)
@@ -59,31 +63,25 @@ function Entry({
   const handleOnTargetChange = () => {
     let totalEarned = 0
     let totalPossible = 0
-    for (const entry of entries) {
+    for (const entry of entriesProp) {
       totalEarned += entry.pointsEarned
       totalPossible += entry.pointsPossible
-      console.log(entry.pointsEarned)
     }
 
-    totalEarned -= entryPERef.current.value
+    if (entryTargetRef.current.value === '') return
+    totalEarned -= parseInt(entryProp.pointsEarned)
     let totalNeeded =
       totalPossible * (parseInt(entryTargetRef.current.value) / 100)
-    entryPERef.current.value = totalNeeded
 
-    // handlePredict(
-    //   entryProp.id,
-    //   parseInt(entryPERef.current.value),
-    //   parseInt(entryPPRef.current.value),
-    //   parseInt(entryTargetRef.current.value)
-    // )
+    setPEState(totalNeeded - totalEarned)
   }
 
   const handleOnClickEnd = () => {
     setIsPredicting(false)
     handleEnd(
       entryProp.id,
-      parseInt(entryPERef.current.value),
-      parseInt(entryPPRef.current.value)
+      parseInt(pointsEarnedState),
+      parseInt(pointsPossibleState)
     )
   }
 
@@ -124,13 +122,11 @@ function Entry({
     return (
       <tr>
         <td className="font-mono">{entryProp.name}</td>
-        <td>
-          <input ref={entryPERef} type="number" />
+        <td className="font-mono">{pointsEarnedState}</td>
+        <td className="font-mono">{pointsPossibleState}</td>
+        <td className="font-mono">
+          {(pointsEarnedState / pointsPossibleState) * 100}%
         </td>
-        <td>
-          <input ref={entryPPRef} type="number" />
-        </td>
-        <td></td>
         <td>
           <button
             onClick={handleOnClickX}

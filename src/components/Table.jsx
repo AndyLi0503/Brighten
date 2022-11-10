@@ -104,19 +104,6 @@ export default function Table({ tableProp }) {
     setEntries(newEntries)
   }
 
-  // const handlePredict = (id, PE, PP, target) => {
-  //   let totalEarned = 0
-  //   let totalPossible = 0
-  //   for (const entry of entries) {
-  //     totalEarned += entry.pointsEarned
-  //     totalPossible += entry.pointsPossible
-  //   }
-  //   const index = entries.findIndex((entry) => entry.id === id)
-  //   totalEarned -= PE
-  //   let totalNeeded = totalPossible * (target / 100)
-  //   entryPERef.current.value = totalNeeded
-  // }
-
   const handleEnd = (id, newPE, newPP) => {
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
@@ -162,9 +149,9 @@ export default function Table({ tableProp }) {
                 entryProp={entryObject}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
-                // handlePredict={handlePredict}
                 handleEnd={handleEnd}
                 key={entryObject.id}
+                entriesProp={entries}
               />
             ))}
           </tbody>
