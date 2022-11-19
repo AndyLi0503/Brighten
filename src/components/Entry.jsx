@@ -44,9 +44,6 @@ function Entry({
     if (isPredicting && entryTargetRef.current) {
       setPEState(entryProp.pointsEarned)
       setPPState(entryProp.pointsPossible)
-      // entryPERef.current.value = entryProp.pointsEarned
-      // entryPPRef.current.value = entryProp.pointsPossible
-      console.log(entryProp)
     }
   }, [entryProp, entryTargetRef, isPredicting])
 
@@ -146,7 +143,7 @@ function Entry({
             End{' '}
           </button>
         </td>
-        <td>Desired:</td>
+        <td className="font-mono">Target Total Percentage:</td>
         <td>
           <input
             onChange={handleOnTargetChange}
@@ -154,7 +151,7 @@ function Entry({
             type="number"
           />
         </td>
-        <td>%</td>
+        <td className="font-mono">%</td>
       </tr>
     )
   } else {
