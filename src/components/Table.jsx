@@ -4,16 +4,18 @@ import './Table.css'
 import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
+import WeightsNote from '../components/WeightsNote'
 
 export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
   const [entries, setEntries] = useState([])
   const [gradeLetter, setGradeLetter] = useState('F')
   const [entriesInit, setEntriesInit] = useState([])
+  const [weights, setWeights] = useState([])
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
-  const entryTargetRef = useRef()
+
   useEffect(function () {
     calculationTotal()
     const e1 = new Entry(uuidv4(), 'Midterm 1', 76, 100, '76.00%')
@@ -132,14 +134,33 @@ export default function Table({ tableProp }) {
       <p className="font-mono">Overall Grade Letter: {gradeLetter} </p>
       <br></br>
 
+      <p className="font-mono">Please input category weight for the course:</p>
       <div>
-        <table className="table-auto border-separate border-spacing-5 border border-slate-400">
+        <table className="table-auto border-separate border-spacing-5 border">
+          <thead classNName="text-center">
+            <tr>
+              <th className="table-header">Assignment</th>
+              <th className="table-header">Quiz</th>
+              <th className="table-header">Exam/Test</th>
+              <th className="table-header">Project</th>
+              <th className="table-header">Participation</th>
+            </tr>
+          </thead>
+          <tbody className="text-center"></tbody>
+        </table>
+      </div>
+
+      <WeightsNote />
+
+      <div>
+        <table className="table-auto border-separate border-spacing-5 border">
           <thead className="text-center">
             <tr>
               <th className="table-header">Name</th>
               <th className="table-header">Points Earned</th>
               <th className="table-header">Points Possible</th>
               <th className="table-header">Percent</th>
+              <th className="table-header">Category</th>
             </tr>
           </thead>
 

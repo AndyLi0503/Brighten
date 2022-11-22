@@ -15,6 +15,7 @@ function Entry({
   const entryPERef = useRef()
   const entryPPRef = useRef()
   const entryTargetRef = useRef()
+  const entryCategoryRef = useRef()
   const handleOnClickX = () => {
     handleDelete(entryProp.id)
   }
@@ -161,6 +162,16 @@ function Entry({
         <td>{entryProp.pointsEarned}</td>
         <td>{entryProp.pointsPossible}</td>
         <td>{entryProp.percent}</td>
+        <td class="custom-select">
+          <select>
+            <option value="0">Select category:</option>
+            <option value="1">Assignment</option>
+            <option value="2">Quiz</option>
+            <option value="3">Exam/Test</option>
+            <option value="4">Project</option>
+            <option value="5">Participation</option>
+          </select>
+        </td>
         <td>
           <button
             onClick={handleOnClickX}
