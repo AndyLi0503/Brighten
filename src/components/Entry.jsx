@@ -33,13 +33,22 @@ function Entry({
       entryNameRef.current !== undefined &&
       entryPERef.current !== undefined &&
       entryPPRef.current !== undefined &&
+      entryCategoryRef.current !== undefined &&
       isEditing
     ) {
       entryNameRef.current.value = entryProp.name
       entryPERef.current.value = entryProp.pointsEarned
       entryPPRef.current.value = entryProp.pointsPossible
+      entryCategoryRef.current.value = entryProp.category
     }
-  }, [entryNameRef, entryPERef, entryPPRef, entryProp, isEditing])
+  }, [
+    entryNameRef,
+    entryPERef,
+    entryPPRef,
+    entryCategoryRef,
+    entryProp,
+    isEditing,
+  ])
 
   useEffect(() => {
     if (isPredicting && entryTargetRef.current) {
@@ -54,7 +63,8 @@ function Entry({
       entryProp.id,
       entryNameRef.current.value,
       parseInt(entryPERef.current.value),
-      parseInt(entryPPRef.current.value)
+      parseInt(entryPPRef.current.value),
+      entryCategoryRef.current.value
     )
   }
 
@@ -97,6 +107,9 @@ function Entry({
         </td>
         <td></td>
         <td>
+          <input ref={entryCategoryRef} type="text" />
+        </td>
+        <td>
           <button
             onClick={handleOnClickX}
             className="bg-red-400 hover:bg-red-700"
@@ -125,6 +138,7 @@ function Entry({
         <td className="font-mono">
           {(pointsEarnedState / pointsPossibleState) * 100}%
         </td>
+        <td className="font-mono">{entryProp.category}</td>
         <td>
           <button
             onClick={handleOnClickX}
@@ -162,16 +176,7 @@ function Entry({
         <td>{entryProp.pointsEarned}</td>
         <td>{entryProp.pointsPossible}</td>
         <td>{entryProp.percent}</td>
-        <td class="custom-select">
-          <select>
-            <option value="0">Select category:</option>
-            <option value="1">Assignment</option>
-            <option value="2">Quiz</option>
-            <option value="3">Exam/Test</option>
-            <option value="4">Project</option>
-            <option value="5">Participation</option>
-          </select>
-        </td>
+        <td>{entryProp.category}</td>
         <td>
           <button
             onClick={handleOnClickX}

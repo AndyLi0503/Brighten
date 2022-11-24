@@ -11,17 +11,30 @@ export default function Table({ tableProp }) {
   const [entries, setEntries] = useState([])
   const [gradeLetter, setGradeLetter] = useState('F')
   const [entriesInit, setEntriesInit] = useState([])
-  const [weights, setWeights] = useState([])
+  const [weights, setWeights] = useState([1, 1, 1, 1, 1])
+  // const [weightsContain, setWeightsContain] = useState([
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  // ])
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
+  const entryCategoryRef = useRef()
+  const assignmentWeightRef = useRef()
+  const quizWeightRef = useRef()
+  const examWeightRef = useRef()
+  const projectWeightRef = useRef()
+  const participationWeightRef = useRef()
 
   useEffect(function () {
     calculationTotal()
-    const e1 = new Entry(uuidv4(), 'Midterm 1', 76, 100, '76.00%')
-    const e2 = new Entry(uuidv4(), 'Midterm 2', 94, 100, '94.00%')
-    const e3 = new Entry(uuidv4(), 'Midterm 3', 80, 100, '80.00%')
-    const e4 = new Entry(uuidv4(), 'Final', 190, 200, '95.00%')
+    const e1 = new Entry(uuidv4(), 'Midterm', 76, 100, '76.00%', 'Exam')
+    const e2 = new Entry(uuidv4(), 'Project 1', 94, 100, '94.00%', 'Project')
+    const e3 = new Entry(uuidv4(), 'Project 2', 80, 100, '80.00%', 'Project')
+    const e4 = new Entry(uuidv4(), 'Final', 190, 200, '95.00%', 'Exam')
 
     const arr = []
     arr.push(e1)
@@ -30,16 +43,23 @@ export default function Table({ tableProp }) {
     arr.push(e4)
     setEntries(arr)
     setEntriesInit(arr)
+
+    assignmentWeightRef.current.value = 0
+    quizWeightRef.current.value = 0
+    examWeightRef.current.value = 0
+    projectWeightRef.current.value = 0
+    participationWeightRef.current.value = 0
   }, [])
 
   useEffect(() => {
     calculationTotal()
-  }, [entries])
+  }, [entries, weights])
 
   function handleAddEntry(e) {
     const name = entryNameRef.current.value
     const pe = entryPERef.current.value
     const pp = entryPPRef.current.value
+    const category = entryCategoryRef.current.value
     const npe = parseInt(pe, 10)
     const npp = parseInt(pp, 10)
     if (name === '' || pe === '' || pp === '') return
@@ -53,6 +73,7 @@ export default function Table({ tableProp }) {
           pointsEarned: npe,
           pointsPossible: npp,
           percent: (Math.round((npe / npp) * 100 * 100) / 100).toFixed(2) + '%',
+          category: category,
         },
       ]
     })
@@ -60,14 +81,41 @@ export default function Table({ tableProp }) {
     entryNameRef.current.value = null
     entryPERef.current.value = null
     entryPPRef.current.value = null
+    entryCategoryRef.current.value = null
   }
 
   function calculationTotal() {
     let totalEarned = 0
     let totalPossible = 0
+    // for (const entry of entries) {
+    //   if (entry.category === 'Exam') {
+    //     weightsContain[0] = true
+    //   } else if (entry.category === 'Quiz') {
+    //     weightsContain[1] = true
+    //   } else if (entry.category === 'Exam') {
+    //     weightsContain[2] = true
+    //   } else if (entry.category === 'Project') {
+    //     weightsContain[3] = true
+    //   } else if (entry.category === 'Participation') {
+    //     weightsContain[4] = true
+    //   }
+    // }
     for (const entry of entries) {
-      totalEarned += entry.pointsEarned
-      totalPossible += entry.pointsPossible
+      let multiplier = 1
+      if (entry.category === 'Exam') {
+        multiplier = weights[0]
+      } else if (entry.category === 'Quiz') {
+        multiplier = weights[1]
+      } else if (entry.category === 'Exam') {
+        multiplier = weights[2]
+      } else if (entry.category === 'Project') {
+        multiplier = weights[3]
+      } else if (entry.category === 'Participation') {
+        multiplier = weights[4]
+      }
+
+      totalEarned += entry.pointsEarned * multiplier
+      totalPossible += entry.pointsPossible * multiplier
     }
 
     let _gradePercent = totalEarned / totalPossible
@@ -91,7 +139,7 @@ export default function Table({ tableProp }) {
     setEntries(matched)
   }
 
-  const handleEdit = (id, newName, newPE, newPP) => {
+  const handleEdit = (id, newName, newPE, newPP, newCategory) => {
     if (newName === '' || newPE === '' || newPP === '') return
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
@@ -100,7 +148,8 @@ export default function Table({ tableProp }) {
       newName,
       newPE,
       newPP,
-      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%'
+      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%',
+      newCategory
     )
     newEntries[index] = ne
     setEntries(newEntries)
@@ -110,12 +159,14 @@ export default function Table({ tableProp }) {
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
     const name = entries[index].name
+    const category = entries[index].category
     const ne = new Entry(
       id,
       name,
       newPE,
       newPP,
-      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%'
+      (Math.round((newPE / newPP) * 100 * 100) / 100).toFixed(2) + '%',
+      category
     )
     newEntries[index] = ne
     setEntries(newEntries)
@@ -123,6 +174,41 @@ export default function Table({ tableProp }) {
 
   const handleRevertInit = (e) => {
     setEntries(entriesInit)
+  }
+
+  const handleUpdateWeight = () => {
+    let assignmentWeight
+    let quizWeight
+    let examWeight
+    let projectWeight
+    let participationWeight
+    if (assignmentWeightRef.current.value !== 0) {
+      assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
+    }
+    if (quizWeightRef.current.value !== 0) {
+      quizWeight = parseInt(quizWeightRef.current.value) / 100
+    }
+    if (examWeightRef.current.value !== 0) {
+      examWeight = parseInt(examWeightRef.current.value) / 100
+    }
+    if (projectWeightRef.current.value !== 0) {
+      projectWeight = parseInt(projectWeightRef.current.value) / 100
+    }
+    if (participationWeightRef.current.value !== 0) {
+      participationWeight = parseInt(participationWeightRef.current.value) / 100
+    }
+    setWeights([
+      assignmentWeight,
+      quizWeight,
+      examWeight,
+      projectWeight,
+      participationWeight,
+    ])
+    assignmentWeightRef.current.value = 0
+    quizWeightRef.current.value = 0
+    examWeightRef.current.value = 0
+    projectWeightRef.current.value = 0
+    participationWeightRef.current.value = 0
   }
 
   return (
@@ -141,15 +227,42 @@ export default function Table({ tableProp }) {
             <tr>
               <th className="table-header">Assignment</th>
               <th className="table-header">Quiz</th>
-              <th className="table-header">Exam/Test</th>
+              <th className="table-header">Exam</th>
               <th className="table-header">Project</th>
               <th className="table-header">Participation</th>
             </tr>
           </thead>
-          <tbody className="text-center"></tbody>
+          <tbody className="text-center">
+            <tr>
+              <td>
+                <input ref={assignmentWeightRef} type="number" />
+              </td>
+
+              <td>
+                <input ref={quizWeightRef} type="number" />
+              </td>
+
+              <td>
+                <input ref={examWeightRef} type="number" />
+              </td>
+
+              <td>
+                <input ref={projectWeightRef} type="number" />
+              </td>
+
+              <td>
+                <input ref={participationWeightRef} type="number" />
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
-
+      <button
+        onClick={handleUpdateWeight}
+        className="bg-orange-300 hover:bg-orange-400 rounded-full"
+      >
+        Update
+      </button>
       <WeightsNote />
 
       <div>
@@ -187,6 +300,8 @@ export default function Table({ tableProp }) {
       <input ref={entryPERef} type="number" />
       <p className="font-mono">Points possible of entry:</p>
       <input ref={entryPPRef} type="number" />
+      <p className="font-mono">Category of added entry::</p>
+      <input ref={entryCategoryRef} type="text" autoComplete="off" />
 
       <br></br>
       <br></br>
