@@ -12,6 +12,7 @@ function WeightsNote() {
       <p className="font-mono">
         (Example: put in "25" if a category is considered 25% of total grade)
       </p>
+      <p className="font-mono">4. Inputed numbers has to add up to 100</p>
       <br></br>
     </div>
   )

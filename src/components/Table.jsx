@@ -11,14 +11,14 @@ export default function Table({ tableProp }) {
   const [entries, setEntries] = useState([])
   const [gradeLetter, setGradeLetter] = useState('F')
   const [entriesInit, setEntriesInit] = useState([])
-  const [weights, setWeights] = useState([1, 1, 1, 1, 1])
-  // const [weightsContain, setWeightsContain] = useState([
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  // ])
+  const [weights, setWeights] = useState([])
+  const [weightsContain, setWeightsContain] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ])
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
@@ -30,11 +30,10 @@ export default function Table({ tableProp }) {
   const participationWeightRef = useRef()
 
   useEffect(function () {
-    calculationTotal()
-    const e1 = new Entry(uuidv4(), 'Midterm', 76, 100, '76.00%', 'Exam')
+    const e1 = new Entry(uuidv4(), 'Midterm', 50, 100, '50.00%', 'Exam')
     const e2 = new Entry(uuidv4(), 'Project 1', 94, 100, '94.00%', 'Project')
-    const e3 = new Entry(uuidv4(), 'Project 2', 80, 100, '80.00%', 'Project')
-    const e4 = new Entry(uuidv4(), 'Final', 190, 200, '95.00%', 'Exam')
+    const e3 = new Entry(uuidv4(), 'Project 2', 98, 100, '98.00%', 'Project')
+    const e4 = new Entry(uuidv4(), 'Final', 120, 200, '60.00%', 'Exam')
 
     const arr = []
     arr.push(e1)
@@ -43,6 +42,8 @@ export default function Table({ tableProp }) {
     arr.push(e4)
     setEntries(arr)
     setEntriesInit(arr)
+
+    calculationTotal()
 
     assignmentWeightRef.current.value = 0
     quizWeightRef.current.value = 0
@@ -84,41 +85,125 @@ export default function Table({ tableProp }) {
     entryCategoryRef.current.value = null
   }
 
+  function checkContainsWeight() {
+    for (const entry of entries) {
+      if (entry.category === 'Assignment') {
+        weightsContain[0] = true
+      } else if (entry.category === 'Quiz') {
+        weightsContain[1] = true
+      } else if (entry.category === 'Exam') {
+        weightsContain[2] = true
+      } else if (entry.category === 'Project') {
+        weightsContain[3] = true
+      } else if (entry.category === 'Participation') {
+        weightsContain[4] = true
+      }
+    }
+  }
+
   function calculationTotal() {
     let totalEarned = 0
     let totalPossible = 0
-    // for (const entry of entries) {
-    //   if (entry.category === 'Exam') {
-    //     weightsContain[0] = true
-    //   } else if (entry.category === 'Quiz') {
-    //     weightsContain[1] = true
-    //   } else if (entry.category === 'Exam') {
-    //     weightsContain[2] = true
-    //   } else if (entry.category === 'Project') {
-    //     weightsContain[3] = true
-    //   } else if (entry.category === 'Participation') {
-    //     weightsContain[4] = true
-    //   }
-    // }
-    for (const entry of entries) {
-      let multiplier = 1
-      if (entry.category === 'Exam') {
-        multiplier = weights[0]
-      } else if (entry.category === 'Quiz') {
-        multiplier = weights[1]
-      } else if (entry.category === 'Exam') {
-        multiplier = weights[2]
-      } else if (entry.category === 'Project') {
-        multiplier = weights[3]
-      } else if (entry.category === 'Participation') {
-        multiplier = weights[4]
-      }
+    let _gradePercent = 0
 
-      totalEarned += entry.pointsEarned * multiplier
-      totalPossible += entry.pointsPossible * multiplier
+    checkContainsWeight()
+
+    const assignmentNotZero = assignmentWeightRef.current.value !== 0
+    const quizNotZero = quizWeightRef.current.value !== 0
+    const examNotZero = examWeightRef.current.value !== 0
+    const projectNotZero = projectWeightRef.current.value !== 0
+    const participationNotZero = participationWeightRef.current.value !== 0
+
+    if (
+      !assignmentNotZero &&
+      !quizNotZero &&
+      !examNotZero &&
+      !projectNotZero &&
+      !participationNotZero
+    ) {
+      let count
+      for (const contain of weightsContain) {
+        if (contain) {
+          count += 1
+        }
+      }
+      if (weightsContain[0]) {
+        weights[0] = 1 / count
+      }
+      if (weightsContain[1]) {
+        weights[1] = 1 / count
+      }
+      if (weightsContain[2]) {
+        weights[2] = 1 / count
+      }
+      if (weightsContain[3]) {
+        weights[3] = 1 / count
+      }
+      if (weightsContain[4]) {
+        weights[4] = 1 / count
+      }
     }
 
-    let _gradePercent = totalEarned / totalPossible
+    if (weightsContain[0]) {
+      for (const entry of entries) {
+        if (entry.category === 'Assignment') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+          const categoryPercent = totalEarned / totalPossible
+          _gradePercent += categoryPercent * weights[0]
+        }
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContain[1]) {
+      for (const entry of entries) {
+        if (entry.category === 'Quiz') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+          const categoryPercent = totalEarned / totalPossible
+          _gradePercent += categoryPercent * weights[1]
+        }
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContain[2]) {
+      for (const entry of entries) {
+        if (entry.category === 'Exam') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+          const categoryPercent = totalEarned / totalPossible
+          _gradePercent += categoryPercent * weights[2]
+        }
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContain[3]) {
+      for (const entry of entries) {
+        if (entry.category === 'Project') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+          const categoryPercent = totalEarned / totalPossible
+          _gradePercent += categoryPercent * weights[3]
+        }
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContain[4]) {
+      for (const entry of entries) {
+        if (entry.category === 'Participation') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+          const categoryPercent = totalEarned / totalPossible
+          _gradePercent += categoryPercent * weights[4]
+        }
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
     if (_gradePercent < 0.6) setGradeLetter('F')
     if (_gradePercent >= 0.6) setGradeLetter('D')
     if (_gradePercent >= 0.67) setGradeLetter('D+')
@@ -182,33 +267,54 @@ export default function Table({ tableProp }) {
     let examWeight
     let projectWeight
     let participationWeight
-    if (assignmentWeightRef.current.value !== 0) {
+
+    const assignmentNotZero = assignmentWeightRef.current.value !== 0
+    const quizNotZero = quizWeightRef.current.value !== 0
+    const examNotZero = examWeightRef.current.value !== 0
+    const projectNotZero = projectWeightRef.current.value !== 0
+    const participationNotZero = participationWeightRef.current.value !== 0
+    const total =
+      assignmentWeightRef.current.value +
+      quizWeightRef.current.value +
+      examWeightRef.current.value +
+      projectWeightRef.current.value +
+      participationWeightRef.current.value
+    if (assignmentNotZero) {
       assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
     }
-    if (quizWeightRef.current.value !== 0) {
+    if (quizNotZero) {
       quizWeight = parseInt(quizWeightRef.current.value) / 100
     }
-    if (examWeightRef.current.value !== 0) {
+    if (examNotZero) {
       examWeight = parseInt(examWeightRef.current.value) / 100
     }
-    if (projectWeightRef.current.value !== 0) {
+    if (projectNotZero) {
       projectWeight = parseInt(projectWeightRef.current.value) / 100
     }
-    if (participationWeightRef.current.value !== 0) {
+    if (participationNotZero) {
       participationWeight = parseInt(participationWeightRef.current.value) / 100
     }
-    setWeights([
-      assignmentWeight,
-      quizWeight,
-      examWeight,
-      projectWeight,
-      participationWeight,
-    ])
-    assignmentWeightRef.current.value = 0
-    quizWeightRef.current.value = 0
-    examWeightRef.current.value = 0
-    projectWeightRef.current.value = 0
-    participationWeightRef.current.value = 0
+    if (
+      assignmentNotZero &&
+      quizNotZero &&
+      examNotZero &&
+      projectNotZero &&
+      participationNotZero &&
+      total === 100
+    ) {
+      setWeights([
+        assignmentWeight,
+        quizWeight,
+        examWeight,
+        projectWeight,
+        participationWeight,
+      ])
+      assignmentWeightRef.current.value = 0
+      quizWeightRef.current.value = 0
+      examWeightRef.current.value = 0
+      projectWeightRef.current.value = 0
+      participationWeightRef.current.value = 0
+    }
   }
 
   return (
@@ -223,7 +329,7 @@ export default function Table({ tableProp }) {
       <p className="font-mono">Please input category weight for the course:</p>
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
-          <thead classNName="text-center">
+          <thead className="text-center">
             <tr>
               <th className="table-header">Assignment</th>
               <th className="table-header">Quiz</th>
