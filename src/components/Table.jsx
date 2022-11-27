@@ -11,7 +11,7 @@ export default function Table({ tableProp }) {
   const [entries, setEntries] = useState([])
   const [gradeLetter, setGradeLetter] = useState('F')
   const [entriesInit, setEntriesInit] = useState([])
-  const [weights, setWeights] = useState([])
+  const [weights, setWeights] = useState([0, 0, 0, 0, 0])
   const [weightsContain, setWeightsContain] = useState([
     false,
     false,
@@ -108,25 +108,27 @@ export default function Table({ tableProp }) {
 
     checkContainsWeight()
 
-    const assignmentNotZero = assignmentWeightRef.current.value !== 0
-    const quizNotZero = quizWeightRef.current.value !== 0
-    const examNotZero = examWeightRef.current.value !== 0
-    const projectNotZero = projectWeightRef.current.value !== 0
-    const participationNotZero = participationWeightRef.current.value !== 0
+    const assignmentZero = parseInt(assignmentWeightRef.current.value) === 0
+    const quizZero = parseInt(quizWeightRef.current.value) === 0
+    const examZero = parseInt(examWeightRef.current.value) === 0
+    const projectZero = parseInt(projectWeightRef.current.value) === 0
+    const participationZero =
+      parseInt(participationWeightRef.current.value) === 0
 
     if (
-      !assignmentNotZero &&
-      !quizNotZero &&
-      !examNotZero &&
-      !projectNotZero &&
-      !participationNotZero
+      assignmentZero &&
+      quizZero &&
+      examZero &&
+      projectZero &&
+      participationZero
     ) {
-      let count
+      let count = 0
       for (const contain of weightsContain) {
         if (contain) {
           count += 1
         }
       }
+
       if (weightsContain[0]) {
         weights[0] = 1 / count
       }
@@ -175,8 +177,13 @@ export default function Table({ tableProp }) {
           totalPossible += entry.pointsPossible
           const categoryPercent = totalEarned / totalPossible
           _gradePercent += categoryPercent * weights[2]
+          // console.log('Exam category percent: ', categoryPercent)
         }
       }
+      // console.log('grade perccent: ', _gradePercent)
+      // console.log('Exam total earned: ', totalEarned)
+      // console.log('Exam total possible: ', totalPossible)
+
       totalEarned = 0
       totalPossible = 0
     }
@@ -268,17 +275,19 @@ export default function Table({ tableProp }) {
     let projectWeight
     let participationWeight
 
-    const assignmentNotZero = assignmentWeightRef.current.value !== 0
-    const quizNotZero = quizWeightRef.current.value !== 0
-    const examNotZero = examWeightRef.current.value !== 0
-    const projectNotZero = projectWeightRef.current.value !== 0
-    const participationNotZero = participationWeightRef.current.value !== 0
+    const assignmentNotZero = parseInt(assignmentWeightRef.current.value) !== 0
+    const quizNotZero = parseInt(quizWeightRef.current.value) !== 0
+    const examNotZero = parseInt(examWeightRef.current.value) !== 0
+    const projectNotZero = parseInt(projectWeightRef.current.value) !== 0
+    const participationNotZero =
+      parseInt(participationWeightRef.current.value) !== 0
     const total =
-      assignmentWeightRef.current.value +
-      quizWeightRef.current.value +
-      examWeightRef.current.value +
-      projectWeightRef.current.value +
-      participationWeightRef.current.value
+      parseInt(assignmentWeightRef.current.value) +
+      parseInt(quizWeightRef.current.value) +
+      parseInt(examWeightRef.current.value) +
+      parseInt(projectWeightRef.current.value) +
+      parseInt(participationWeightRef.current.value)
+
     if (assignmentNotZero) {
       assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
     }
@@ -406,7 +415,7 @@ export default function Table({ tableProp }) {
       <input ref={entryPERef} type="number" />
       <p className="font-mono">Points possible of entry:</p>
       <input ref={entryPPRef} type="number" />
-      <p className="font-mono">Category of added entry::</p>
+      <p className="font-mono">Category of added entry:</p>
       <input ref={entryCategoryRef} type="text" autoComplete="off" />
 
       <br></br>
