@@ -205,12 +205,8 @@ function Entry({
       totalPossible = 0
     }
 
-    // console.log(_gradePercent)
     let percentNeeded =
       parseInt(entryTargetRef.current.value) / 100 - _gradePercent
-
-    // console.log(percentNeeded)
-    // console.log(examWeightProp)
 
     if (thisCategory === 'Assignment') {
       if (weightsProp[0] === 0) {

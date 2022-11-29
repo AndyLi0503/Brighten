@@ -115,7 +115,7 @@ export default function Table({ tableProp }) {
         {
           id: uuidv4(),
           name: name,
-          pointsEarned: (Math.round(npe * 100 * 100) / 100).toFixed(2),
+          pointsEarned: npe,
           pointsPossible: npp,
           percent: (Math.round((npe / npp) * 100 * 100) / 100).toFixed(2) + '%',
           category: category,
@@ -268,11 +268,6 @@ export default function Table({ tableProp }) {
       } else {
         _gradePercent += categoryPercent * weights[2]
       }
-      // console.log('Exam weight: ', weights[2])
-      // console.log('Exam category percent: ', categoryPercent)
-      // console.log('grade percent: ', _gradePercent)
-      // console.log('Exam total earned: ', totalEarned)
-      // console.log('Exam total possible: ', totalPossible)
 
       totalEarned = 0
       totalPossible = 0
@@ -292,11 +287,6 @@ export default function Table({ tableProp }) {
         _gradePercent += categoryPercent * weights[3]
       }
 
-      // console.log('Project weight: ', weights[3])
-      // console.log('Project category percent: ', categoryPercent)
-      // console.log('grade percent: ', _gradePercent)
-      // console.log('Project total earned: ', totalEarned)
-      // console.log('Project total possible: ', totalPossible)
       totalEarned = 0
       totalPossible = 0
     }
@@ -394,8 +384,6 @@ export default function Table({ tableProp }) {
       parseInt(projectWeightRef.current.value) +
       parseInt(participationWeightRef.current.value)
 
-    // console.log(assignmentWeightRef.current)
-
     if (!isAssignmentZero) {
       assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
     }
@@ -411,12 +399,7 @@ export default function Table({ tableProp }) {
     if (!isParticipationZero) {
       participationWeight = parseInt(participationWeightRef.current.value) / 100
     }
-    // console.log('total weight is: ', total)
-    // console.log(!isAssignmentZero)
-    // console.log(quizNotZero)
-    // console.log(examNotZero)
-    // console.log(projectNotZero)
-    // console.log(participationNotZero)
+
     if (
       !isAssignmentZero ||
       !isQuizZero ||
@@ -540,7 +523,7 @@ export default function Table({ tableProp }) {
         onClick={handleAddEntry}
         className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
-        Add Entry{' '}
+        Add Entry
       </button>
       <br></br>
       <br></br>

@@ -4,8 +4,6 @@ import Table from '../components/Table'
 import CourseTitle from '../components/CourseTitle'
 
 function SingleCourseSummary() {
-  // console.log(entries)
-
   return (
     <div>
       <CourseTitle />
