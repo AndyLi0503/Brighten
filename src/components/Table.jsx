@@ -43,7 +43,7 @@ export default function Table({ tableProp }) {
     setEntries(arr)
     setEntriesInit(arr)
 
-    calculationTotal()
+    // calculationTotal()
 
     assignmentWeightRef.current.value = 0
     quizWeightRef.current.value = 0
@@ -53,6 +53,7 @@ export default function Table({ tableProp }) {
   }, [])
 
   useEffect(() => {
+    console.log(weights)
     calculationTotal()
   }, [entries, weights])
 
@@ -63,7 +64,26 @@ export default function Table({ tableProp }) {
     const category = entryCategoryRef.current.value
     const npe = parseInt(pe, 10)
     const npp = parseInt(pp, 10)
-    if (name === '' || pe === '' || pp === '') return
+
+    let isCategoryWeightDefined = false
+    if (category === 'Assignment' && weights[0] !== undefined) {
+      isCategoryWeightDefined = true
+    }
+    if (category === 'Quiz' && weights[1] !== undefined) {
+      isCategoryWeightDefined = true
+    }
+    if (category === 'Exam' && weights[2] !== undefined) {
+      isCategoryWeightDefined = true
+    }
+    if (category === 'Project' && weights[3] !== undefined) {
+      isCategoryWeightDefined = true
+    }
+    if (category === 'Participation' && weights[4] !== undefined) {
+      isCategoryWeightDefined = true
+    }
+
+    if (name === '' || pe === '' || pp === '' || !isCategoryWeightDefined)
+      return
     setEntries((prevEntries) => {
       return [
         ...prevEntries,
@@ -86,19 +106,31 @@ export default function Table({ tableProp }) {
   }
 
   function checkContainsWeight() {
+    let assignmentContain = false
+    let quizContain = false
+    let examContain = false
+    let projectContain = false
+    let participationContain = false
     for (const entry of entries) {
       if (entry.category === 'Assignment') {
-        weightsContain[0] = true
+        assignmentContain = true
       } else if (entry.category === 'Quiz') {
-        weightsContain[1] = true
+        quizContain = true
       } else if (entry.category === 'Exam') {
-        weightsContain[2] = true
+        examContain = true
       } else if (entry.category === 'Project') {
-        weightsContain[3] = true
+        projectContain = true
       } else if (entry.category === 'Participation') {
-        weightsContain[4] = true
+        participationContain = true
       }
     }
+    setWeightsContain([
+      assignmentContain,
+      quizContain,
+      examContain,
+      projectContain,
+      participationContain,
+    ])
   }
 
   function calculationTotal() {
@@ -106,7 +138,32 @@ export default function Table({ tableProp }) {
     let totalPossible = 0
     let _gradePercent = 0
 
-    checkContainsWeight()
+    // checkContainsWeight()
+    let assignmentContain = false
+    let quizContain = false
+    let examContain = false
+    let projectContain = false
+    let participationContain = false
+    for (const entry of entries) {
+      if (entry.category === 'Assignment') {
+        assignmentContain = true
+      } else if (entry.category === 'Quiz') {
+        quizContain = true
+      } else if (entry.category === 'Exam') {
+        examContain = true
+      } else if (entry.category === 'Project') {
+        projectContain = true
+      } else if (entry.category === 'Participation') {
+        participationContain = true
+      }
+    }
+    // setWeightsContain([
+    //   assignmentContain,
+    //   quizContain,
+    //   examContain,
+    //   projectContain,
+    //   participationContain,
+    // ])
 
     const assignmentZero = parseInt(assignmentWeightRef.current.value) === 0
     const quizZero = parseInt(quizWeightRef.current.value) === 0
@@ -115,6 +172,11 @@ export default function Table({ tableProp }) {
     const participationZero =
       parseInt(participationWeightRef.current.value) === 0
 
+    let assignmentWeight = 0
+    let quizWeight = 0
+    let examWeight = 0
+    let projectWeight = 0
+    let participationWeight = 0
     if (
       assignmentZero &&
       quizZero &&
@@ -123,94 +185,147 @@ export default function Table({ tableProp }) {
       participationZero
     ) {
       let count = 0
-      for (const contain of weightsContain) {
-        if (contain) {
-          count += 1
-        }
+      // for (const contain of weightsContain) {
+      //   if (contain) {
+      //     count += 1
+      //   }
+      // }
+      if (assignmentContain) {
+        count += 1
+      }
+      if (quizContain) {
+        count += 1
+      }
+      if (examContain) {
+        count += 1
+      }
+      if (projectContain) {
+        count += 1
+      }
+      if (participationContain) {
+        count += 1
       }
 
-      if (weightsContain[0]) {
-        weights[0] = 1 / count
+      if (assignmentContain) {
+        assignmentWeight = 1 / count
       }
-      if (weightsContain[1]) {
-        weights[1] = 1 / count
+      if (quizContain) {
+        quizWeight = 1 / count
       }
-      if (weightsContain[2]) {
-        weights[2] = 1 / count
+      if (examContain) {
+        examWeight = 1 / count
       }
-      if (weightsContain[3]) {
-        weights[3] = 1 / count
+      if (projectContain) {
+        projectWeight = 1 / count
       }
-      if (weightsContain[4]) {
-        weights[4] = 1 / count
+      if (participationContain) {
+        participationWeight = 1 / count
       }
+
+      // setWeights([
+      //   assignmentWeight,
+      //   quizWeight,
+      //   examWeight,
+      //   projectWeight,
+      //   participationWeight,
+      // ])
     }
 
-    if (weightsContain[0]) {
+    if (assignmentContain) {
       for (const entry of entries) {
         if (entry.category === 'Assignment') {
           totalEarned += entry.pointsEarned
           totalPossible += entry.pointsPossible
-          const categoryPercent = totalEarned / totalPossible
-          _gradePercent += categoryPercent * weights[0]
         }
+      }
+      const categoryPercent = totalEarned / totalPossible
+
+      if (weights[0] === 0) {
+        _gradePercent += categoryPercent * assignmentWeight
+      } else {
+        _gradePercent += categoryPercent * weights[0]
       }
       totalEarned = 0
       totalPossible = 0
     }
-    if (weightsContain[1]) {
+    if (quizContain) {
       for (const entry of entries) {
         if (entry.category === 'Quiz') {
           totalEarned += entry.pointsEarned
           totalPossible += entry.pointsPossible
-          const categoryPercent = totalEarned / totalPossible
-          _gradePercent += categoryPercent * weights[1]
         }
+      }
+      const categoryPercent = totalEarned / totalPossible
+      if (weights[1] === 0) {
+        _gradePercent += categoryPercent * quizWeight
+      } else {
+        _gradePercent += categoryPercent * weights[1]
       }
       totalEarned = 0
       totalPossible = 0
     }
-    if (weightsContain[2]) {
+
+    if (examContain) {
       for (const entry of entries) {
         if (entry.category === 'Exam') {
           totalEarned += entry.pointsEarned
           totalPossible += entry.pointsPossible
-          const categoryPercent = totalEarned / totalPossible
-          _gradePercent += categoryPercent * weights[2]
-          // console.log('Exam category percent: ', categoryPercent)
         }
       }
-      // console.log('grade perccent: ', _gradePercent)
-      // console.log('Exam total earned: ', totalEarned)
-      // console.log('Exam total possible: ', totalPossible)
+      const categoryPercent = totalEarned / totalPossible
+      if (weights[2] === 0) {
+        _gradePercent += categoryPercent * examWeight
+      } else {
+        _gradePercent += categoryPercent * weights[2]
+      }
+      console.log('Exam weight: ', weights[2])
+      console.log('Exam category percent: ', categoryPercent)
+      console.log('grade perccent: ', _gradePercent)
+      console.log('Exam total earned: ', totalEarned)
+      console.log('Exam total possible: ', totalPossible)
 
       totalEarned = 0
       totalPossible = 0
     }
-    if (weightsContain[3]) {
+    if (projectContain) {
       for (const entry of entries) {
         if (entry.category === 'Project') {
           totalEarned += entry.pointsEarned
           totalPossible += entry.pointsPossible
-          const categoryPercent = totalEarned / totalPossible
-          _gradePercent += categoryPercent * weights[3]
         }
       }
+      const categoryPercent = totalEarned / totalPossible
+      if (weights[3] === 0) {
+        _gradePercent += categoryPercent * projectWeight
+      } else {
+        _gradePercent += categoryPercent * weights[3]
+      }
+
+      console.log('Project weight: ', weights[3])
+      console.log('Project category percent: ', categoryPercent)
+      console.log('grade perccent: ', _gradePercent)
+      console.log('Project total earned: ', totalEarned)
+      console.log('Project total possible: ', totalPossible)
       totalEarned = 0
       totalPossible = 0
     }
-    if (weightsContain[4]) {
+    if (participationContain) {
       for (const entry of entries) {
         if (entry.category === 'Participation') {
           totalEarned += entry.pointsEarned
           totalPossible += entry.pointsPossible
-          const categoryPercent = totalEarned / totalPossible
-          _gradePercent += categoryPercent * weights[4]
         }
+      }
+      const categoryPercent = totalEarned / totalPossible
+      if (weights[4] === 0) {
+        _gradePercent += categoryPercent * participationWeight
+      } else {
+        _gradePercent += categoryPercent * weights[4]
       }
       totalEarned = 0
       totalPossible = 0
     }
+
     if (_gradePercent < 0.6) setGradeLetter('F')
     if (_gradePercent >= 0.6) setGradeLetter('D')
     if (_gradePercent >= 0.67) setGradeLetter('D+')
@@ -275,7 +390,7 @@ export default function Table({ tableProp }) {
     let projectWeight
     let participationWeight
 
-    const assignmentNotZero = parseInt(assignmentWeightRef.current.value) !== 0
+    const isAssignmentZero = parseInt(assignmentWeightRef.current.value) === 0
     const quizNotZero = parseInt(quizWeightRef.current.value) !== 0
     const examNotZero = parseInt(examWeightRef.current.value) !== 0
     const projectNotZero = parseInt(projectWeightRef.current.value) !== 0
@@ -288,7 +403,9 @@ export default function Table({ tableProp }) {
       parseInt(projectWeightRef.current.value) +
       parseInt(participationWeightRef.current.value)
 
-    if (assignmentNotZero) {
+    console.log(assignmentWeightRef.current)
+
+    if (!isAssignmentZero) {
       assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
     }
     if (quizNotZero) {
@@ -303,13 +420,18 @@ export default function Table({ tableProp }) {
     if (participationNotZero) {
       participationWeight = parseInt(participationWeightRef.current.value) / 100
     }
+    console.log('total weight is: ', total)
+    console.log(!isAssignmentZero)
+    console.log(quizNotZero)
+    console.log(examNotZero)
+    console.log(projectNotZero)
+    console.log(participationNotZero)
     if (
-      assignmentNotZero &&
-      quizNotZero &&
-      examNotZero &&
-      projectNotZero &&
-      participationNotZero &&
-      total === 100
+      !isAssignmentZero ||
+      quizNotZero ||
+      examNotZero ||
+      projectNotZero ||
+      participationNotZero
     ) {
       setWeights([
         assignmentWeight,
@@ -318,12 +440,13 @@ export default function Table({ tableProp }) {
         projectWeight,
         participationWeight,
       ])
-      assignmentWeightRef.current.value = 0
-      quizWeightRef.current.value = 0
-      examWeightRef.current.value = 0
-      projectWeightRef.current.value = 0
-      participationWeightRef.current.value = 0
+      // assignmentWeightRef.current.value = 0
+      // quizWeightRef.current.value = 0
+      // examWeightRef.current.value = 0
+      // projectWeightRef.current.value = 0
+      // participationWeightRef.current.value = 0
     }
+    // calculationTotal()
   }
 
   return (
@@ -425,7 +548,7 @@ export default function Table({ tableProp }) {
         onClick={handleAddEntry}
         className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
-        Add Assignment/Quiz/Exam{' '}
+        Add Entry{' '}
       </button>
       <br></br>
       <br></br>
