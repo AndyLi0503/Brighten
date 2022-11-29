@@ -205,57 +205,104 @@ function Entry({
       totalPossible = 0
     }
 
-    console.log(_gradePercent)
+    // console.log(_gradePercent)
     let percentNeeded =
       parseInt(entryTargetRef.current.value) / 100 - _gradePercent
 
     // console.log(percentNeeded)
-    console.log(examWeightProp)
+    // console.log(examWeightProp)
 
     if (thisCategory === 'Assignment') {
       if (weightsProp[0] === 0) {
-        setPEState((percentNeeded / assignmentWeightProp) * assignmentPP)
+        setPEState(
+          (
+            Math.round(
+              (percentNeeded / assignmentWeightProp) * assignmentPP * 100
+            ) / 100
+          ).toFixed(2)
+        )
       } else {
-        setPEState((percentNeeded / weightsProp[0]) * assignmentPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / weightsProp[0]) * examPP * 100) / 100
+          ).toFixed(2)
+        )
       }
     }
     if (thisCategory === 'Quiz') {
       if (weightsProp[1] === 0) {
-        setPEState((percentNeeded / quizWeightProp) * quizPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / quizWeightProp) * quizPP * 100) / 100
+          ).toFixed(2)
+        )
       } else {
-        setPEState((percentNeeded / weightsProp[1]) * quizPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / weightsProp[1]) * quizPP * 100) / 100
+          ).toFixed(2)
+        )
       }
     }
     if (thisCategory === 'Exam') {
       if (weightsProp[2] === 0) {
-        setPEState((percentNeeded / examWeightProp) * examPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / examWeightProp) * examPP * 100) / 100
+          ).toFixed(2)
+        )
       } else {
-        setPEState((percentNeeded / weightsProp[2]) * examPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / weightsProp[2]) * examPP * 100) / 100
+          ).toFixed(2)
+        )
       }
     }
     if (thisCategory === 'Project') {
       if (weightsProp[3] === 0) {
-        setPEState((percentNeeded / projectWeightProp) * projectPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / projectWeightProp) * projectPP * 100) /
+            100
+          ).toFixed(2)
+        )
       } else {
-        setPEState((percentNeeded / weightsProp[3]) * projectPP)
+        setPEState(
+          (
+            Math.round((percentNeeded / weightsProp[3]) * projectPP * 100) / 100
+          ).toFixed(2)
+        )
       }
     }
     if (thisCategory === 'Participation') {
       if (weightsProp[4] === 0) {
-        setPEState((percentNeeded / participationWeightProp) * participationPP)
+        setPEState(
+          (
+            Math.round(
+              (percentNeeded / examWeightProp) * participationPP * 100
+            ) / 100
+          ).toFixed(2)
+        )
       } else {
-        setPEState((percentNeeded / weightsProp[4]) * participationPP)
+        setPEState(
+          (
+            Math.round(
+              (percentNeeded / weightsProp[4]) * participationPP * 100
+            ) / 100
+          ).toFixed(2)
+        )
       }
     }
   }
 
   const handleOnClickEnd = () => {
-    setIsPredicting(false)
     handleEnd(
       entryProp.id,
-      parseInt(pointsEarnedState),
+      Number(pointsEarnedState),
       parseInt(pointsPossibleState)
     )
+    setIsPredicting(false)
   }
 
   if (isEditing && !isPredicting) {
@@ -298,10 +345,16 @@ function Entry({
     return (
       <tr>
         <td className="font-mono">{entryProp.name}</td>
-        <td className="font-mono">{pointsEarnedState}</td>
+        <td className="font-mono">
+          {(Math.round(pointsEarnedState * 100) / 100).toFixed(2)}
+        </td>
         <td className="font-mono">{pointsPossibleState}</td>
         <td className="font-mono">
-          {(pointsEarnedState / pointsPossibleState) * 100}%
+          {(
+            Math.round((pointsEarnedState / pointsPossibleState) * 100 * 100) /
+            100
+          ).toFixed(2)}
+          %
         </td>
         <td className="font-mono">{entryProp.category}</td>
         <td>

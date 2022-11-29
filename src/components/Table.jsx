@@ -35,18 +35,38 @@ export default function Table({ tableProp }) {
   const participationWeightRef = useRef()
 
   useEffect(function () {
-    const e1 = new Entry(uuidv4(), 'Midterm', 50, 100, '50.00%', 'Exam')
-    const e2 = new Entry(uuidv4(), 'Project 1', 94, 100, '94.00%', 'Project')
-    const e3 = new Entry(uuidv4(), 'Project 2', 98, 100, '98.00%', 'Project')
-    const e4 = new Entry(uuidv4(), 'Final', 120, 200, '60.00%', 'Exam')
-    // const e1 = new Entry(uuidv4(), 'Homework 1', 98, 100, '98.00%', Homework)
-    // const e2 = new Entry(uuidv4(), '')
+    const e1 = new Entry(
+      uuidv4(),
+      'Assignment 1',
+      80,
+      100,
+      '98.00%',
+      'Assignment'
+    )
+    const e2 = new Entry(uuidv4(), 'Quiz 1', 8, 10, '80.00%', 'Quiz')
+    const e3 = new Entry(
+      uuidv4(),
+      'Assignment 2',
+      90,
+      100,
+      '90.00%',
+      'Assignment'
+    )
+    const e4 = new Entry(uuidv4(), 'Quiz 2', 10, 10, '100.00%', 'Quiz')
+    const e5 = new Entry(uuidv4(), 'Project 1', 85, 100, '85.00%', 'Project')
+    const e6 = new Entry(uuidv4(), 'Midterm', 55, 100, '55.00%', 'Exam')
+    const e7 = new Entry(uuidv4(), 'Project 2', 190, 200, '95.00%', 'Project')
+    const e8 = new Entry(uuidv4(), 'Final', 285, 300, '95.00%', 'Exam')
 
     const arr = []
     arr.push(e1)
     arr.push(e2)
     arr.push(e3)
     arr.push(e4)
+    arr.push(e5)
+    arr.push(e6)
+    arr.push(e7)
+    arr.push(e8)
     setEntries(arr)
     setEntriesInit(arr)
 
@@ -58,7 +78,6 @@ export default function Table({ tableProp }) {
   }, [])
 
   useEffect(() => {
-    // console.log(weights)
     calculationTotal()
   }, [entries, weights])
 
@@ -96,7 +115,7 @@ export default function Table({ tableProp }) {
         {
           id: uuidv4(),
           name: name,
-          pointsEarned: npe,
+          pointsEarned: (Math.round(npe * 100 * 100) / 100).toFixed(2),
           pointsPossible: npp,
           percent: (Math.round((npe / npp) * 100 * 100) / 100).toFixed(2) + '%',
           category: category,
@@ -108,34 +127,6 @@ export default function Table({ tableProp }) {
     entryPERef.current.value = null
     entryPPRef.current.value = null
     entryCategoryRef.current.value = null
-  }
-
-  function checkContainsWeight() {
-    let assignmentContain = false
-    let quizContain = false
-    let examContain = false
-    let projectContain = false
-    let participationContain = false
-    for (const entry of entries) {
-      if (entry.category === 'Assignment') {
-        assignmentContain = true
-      } else if (entry.category === 'Quiz') {
-        quizContain = true
-      } else if (entry.category === 'Exam') {
-        examContain = true
-      } else if (entry.category === 'Project') {
-        projectContain = true
-      } else if (entry.category === 'Participation') {
-        participationContain = true
-      }
-    }
-    setWeightsContain([
-      assignmentContain,
-      quizContain,
-      examContain,
-      projectContain,
-      participationContain,
-    ])
   }
 
   function calculationTotal() {
@@ -279,7 +270,7 @@ export default function Table({ tableProp }) {
       }
       // console.log('Exam weight: ', weights[2])
       // console.log('Exam category percent: ', categoryPercent)
-      // console.log('grade perccent: ', _gradePercent)
+      // console.log('grade percent: ', _gradePercent)
       // console.log('Exam total earned: ', totalEarned)
       // console.log('Exam total possible: ', totalPossible)
 
@@ -303,7 +294,7 @@ export default function Table({ tableProp }) {
 
       // console.log('Project weight: ', weights[3])
       // console.log('Project category percent: ', categoryPercent)
-      // console.log('grade perccent: ', _gradePercent)
+      // console.log('grade percent: ', _gradePercent)
       // console.log('Project total earned: ', totalEarned)
       // console.log('Project total possible: ', totalPossible)
       totalEarned = 0
@@ -452,7 +443,7 @@ export default function Table({ tableProp }) {
       <p className="font-mono">Overall Grade Letter: {gradeLetter} </p>
       <br></br>
 
-      <p className="font-mono">Please input category weight for the course:</p>
+      <p className="font-mono">Input category weight for the course:</p>
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
           <thead className="text-center">
