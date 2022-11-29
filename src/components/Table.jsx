@@ -19,6 +19,11 @@ export default function Table({ tableProp }) {
     false,
     false,
   ])
+  const [assignmentWeight, setAsssignmentWeight] = useState()
+  const [quizWeight, setQuizWeight] = useState()
+  const [examWeight, setExamWeight] = useState()
+  const [projectWeight, setProjectWeight] = useState()
+  const [participationWeight, setParticipationWeight] = useState()
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
@@ -34,6 +39,8 @@ export default function Table({ tableProp }) {
     const e2 = new Entry(uuidv4(), 'Project 1', 94, 100, '94.00%', 'Project')
     const e3 = new Entry(uuidv4(), 'Project 2', 98, 100, '98.00%', 'Project')
     const e4 = new Entry(uuidv4(), 'Final', 120, 200, '60.00%', 'Exam')
+    // const e1 = new Entry(uuidv4(), 'Homework 1', 98, 100, '98.00%', Homework)
+    // const e2 = new Entry(uuidv4(), '')
 
     const arr = []
     arr.push(e1)
@@ -43,8 +50,6 @@ export default function Table({ tableProp }) {
     setEntries(arr)
     setEntriesInit(arr)
 
-    // calculationTotal()
-
     assignmentWeightRef.current.value = 0
     quizWeightRef.current.value = 0
     examWeightRef.current.value = 0
@@ -53,7 +58,7 @@ export default function Table({ tableProp }) {
   }, [])
 
   useEffect(() => {
-    console.log(weights)
+    // console.log(weights)
     calculationTotal()
   }, [entries, weights])
 
@@ -138,7 +143,6 @@ export default function Table({ tableProp }) {
     let totalPossible = 0
     let _gradePercent = 0
 
-    // checkContainsWeight()
     let assignmentContain = false
     let quizContain = false
     let examContain = false
@@ -157,13 +161,14 @@ export default function Table({ tableProp }) {
         participationContain = true
       }
     }
-    // setWeightsContain([
-    //   assignmentContain,
-    //   quizContain,
-    //   examContain,
-    //   projectContain,
-    //   participationContain,
-    // ])
+
+    setWeightsContain([
+      assignmentContain,
+      quizContain,
+      examContain,
+      projectContain,
+      participationContain,
+    ])
 
     const assignmentZero = parseInt(assignmentWeightRef.current.value) === 0
     const quizZero = parseInt(quizWeightRef.current.value) === 0
@@ -185,11 +190,7 @@ export default function Table({ tableProp }) {
       participationZero
     ) {
       let count = 0
-      // for (const contain of weightsContain) {
-      //   if (contain) {
-      //     count += 1
-      //   }
-      // }
+
       if (assignmentContain) {
         count += 1
       }
@@ -208,27 +209,24 @@ export default function Table({ tableProp }) {
 
       if (assignmentContain) {
         assignmentWeight = 1 / count
+        setAsssignmentWeight(assignmentWeight)
       }
       if (quizContain) {
         quizWeight = 1 / count
+        setQuizWeight(quizWeight)
       }
       if (examContain) {
         examWeight = 1 / count
+        setExamWeight(examWeight)
       }
       if (projectContain) {
         projectWeight = 1 / count
+        setProjectWeight(projectWeight)
       }
       if (participationContain) {
         participationWeight = 1 / count
+        setParticipationWeight(participationWeight)
       }
-
-      // setWeights([
-      //   assignmentWeight,
-      //   quizWeight,
-      //   examWeight,
-      //   projectWeight,
-      //   participationWeight,
-      // ])
     }
 
     if (assignmentContain) {
@@ -248,6 +246,7 @@ export default function Table({ tableProp }) {
       totalEarned = 0
       totalPossible = 0
     }
+
     if (quizContain) {
       for (const entry of entries) {
         if (entry.category === 'Quiz') {
@@ -278,15 +277,16 @@ export default function Table({ tableProp }) {
       } else {
         _gradePercent += categoryPercent * weights[2]
       }
-      console.log('Exam weight: ', weights[2])
-      console.log('Exam category percent: ', categoryPercent)
-      console.log('grade perccent: ', _gradePercent)
-      console.log('Exam total earned: ', totalEarned)
-      console.log('Exam total possible: ', totalPossible)
+      // console.log('Exam weight: ', weights[2])
+      // console.log('Exam category percent: ', categoryPercent)
+      // console.log('grade perccent: ', _gradePercent)
+      // console.log('Exam total earned: ', totalEarned)
+      // console.log('Exam total possible: ', totalPossible)
 
       totalEarned = 0
       totalPossible = 0
     }
+
     if (projectContain) {
       for (const entry of entries) {
         if (entry.category === 'Project') {
@@ -301,11 +301,11 @@ export default function Table({ tableProp }) {
         _gradePercent += categoryPercent * weights[3]
       }
 
-      console.log('Project weight: ', weights[3])
-      console.log('Project category percent: ', categoryPercent)
-      console.log('grade perccent: ', _gradePercent)
-      console.log('Project total earned: ', totalEarned)
-      console.log('Project total possible: ', totalPossible)
+      // console.log('Project weight: ', weights[3])
+      // console.log('Project category percent: ', categoryPercent)
+      // console.log('grade perccent: ', _gradePercent)
+      // console.log('Project total earned: ', totalEarned)
+      // console.log('Project total possible: ', totalPossible)
       totalEarned = 0
       totalPossible = 0
     }
@@ -391,11 +391,11 @@ export default function Table({ tableProp }) {
     let participationWeight
 
     const isAssignmentZero = parseInt(assignmentWeightRef.current.value) === 0
-    const quizNotZero = parseInt(quizWeightRef.current.value) !== 0
-    const examNotZero = parseInt(examWeightRef.current.value) !== 0
-    const projectNotZero = parseInt(projectWeightRef.current.value) !== 0
-    const participationNotZero =
-      parseInt(participationWeightRef.current.value) !== 0
+    const isQuizZero = parseInt(quizWeightRef.current.value) === 0
+    const isExamZero = parseInt(examWeightRef.current.value) === 0
+    const isProjectZero = parseInt(projectWeightRef.current.value) === 0
+    const isParticipationZero =
+      parseInt(participationWeightRef.current.value) === 0
     const total =
       parseInt(assignmentWeightRef.current.value) +
       parseInt(quizWeightRef.current.value) +
@@ -403,35 +403,35 @@ export default function Table({ tableProp }) {
       parseInt(projectWeightRef.current.value) +
       parseInt(participationWeightRef.current.value)
 
-    console.log(assignmentWeightRef.current)
+    // console.log(assignmentWeightRef.current)
 
     if (!isAssignmentZero) {
       assignmentWeight = parseInt(assignmentWeightRef.current.value) / 100
     }
-    if (quizNotZero) {
+    if (!isQuizZero) {
       quizWeight = parseInt(quizWeightRef.current.value) / 100
     }
-    if (examNotZero) {
+    if (!isExamZero) {
       examWeight = parseInt(examWeightRef.current.value) / 100
     }
-    if (projectNotZero) {
+    if (!isProjectZero) {
       projectWeight = parseInt(projectWeightRef.current.value) / 100
     }
-    if (participationNotZero) {
+    if (!isParticipationZero) {
       participationWeight = parseInt(participationWeightRef.current.value) / 100
     }
-    console.log('total weight is: ', total)
-    console.log(!isAssignmentZero)
-    console.log(quizNotZero)
-    console.log(examNotZero)
-    console.log(projectNotZero)
-    console.log(participationNotZero)
+    // console.log('total weight is: ', total)
+    // console.log(!isAssignmentZero)
+    // console.log(quizNotZero)
+    // console.log(examNotZero)
+    // console.log(projectNotZero)
+    // console.log(participationNotZero)
     if (
       !isAssignmentZero ||
-      quizNotZero ||
-      examNotZero ||
-      projectNotZero ||
-      participationNotZero
+      !isQuizZero ||
+      !isExamZero ||
+      !isProjectZero ||
+      !isParticipationZero
     ) {
       setWeights([
         assignmentWeight,
@@ -440,13 +440,7 @@ export default function Table({ tableProp }) {
         projectWeight,
         participationWeight,
       ])
-      // assignmentWeightRef.current.value = 0
-      // quizWeightRef.current.value = 0
-      // examWeightRef.current.value = 0
-      // projectWeightRef.current.value = 0
-      // participationWeightRef.current.value = 0
     }
-    // calculationTotal()
   }
 
   return (
@@ -524,6 +518,13 @@ export default function Table({ tableProp }) {
                 handleEnd={handleEnd}
                 key={entryObject.id}
                 entriesProp={entries}
+                weightsProp={weights}
+                weightsContainProp={weightsContain}
+                assignmentWeightProp={assignmentWeight}
+                quizWeightProp={quizWeight}
+                examWeightProp={examWeight}
+                projectWeightProp={projectWeight}
+                participationWeightProp={participationWeight}
               />
             ))}
           </tbody>

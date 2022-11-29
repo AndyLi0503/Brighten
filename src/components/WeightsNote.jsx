@@ -13,7 +13,7 @@ function WeightsNote() {
         (Example: put in "25" if a category is considered 25% of total grade)
       </p>
       <p className="font-mono">
-        4. You are unable to add an entry with an undefined category weight
+        4. You are not allowed to add an entry with an undefined category weight
       </p>
       <br></br>
     </div>

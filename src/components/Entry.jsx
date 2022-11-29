@@ -6,6 +6,13 @@ function Entry({
   handleEdit,
   handleEnd,
   entriesProp,
+  weightsProp,
+  weightsContainProp,
+  assignmentWeightProp,
+  quizWeightProp,
+  examWeightProp,
+  projectWeightProp,
+  participationWeightProp,
 }) {
   const [isEditing, setIsEditing] = useState(false)
   const [isPredicting, setIsPredicting] = useState(false)
@@ -69,19 +76,177 @@ function Entry({
   }
 
   const handleOnTargetChange = () => {
+    if (entryTargetRef.current.value === '') return
+
     let totalEarned = 0
     let totalPossible = 0
-    for (const entry of entriesProp) {
-      totalEarned += entry.pointsEarned
-      totalPossible += entry.pointsPossible
+
+    const thisCategory = entryProp.category
+
+    let assignmentPP = 0
+    let quizPP = 0
+    let examPP = 0
+    let projectPP = 0
+    let participationPP = 0
+
+    let _gradePercent = 0
+    if (weightsContainProp[0]) {
+      for (const entry of entriesProp) {
+        if (entry.category === 'Assignment') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+        }
+      }
+
+      assignmentPP = totalPossible
+      if (thisCategory === 'Assignment') {
+        totalEarned -= entryProp.pointsEarned
+      }
+      let categoryPercent = totalEarned / totalPossible
+
+      if (weightsProp[0] === 0) {
+        _gradePercent += categoryPercent * assignmentWeightProp
+      } else {
+        _gradePercent += categoryPercent * weightsProp[0]
+      }
+      totalEarned = 0
+      totalPossible = 0
     }
 
-    if (entryTargetRef.current.value === '') return
-    totalEarned -= parseInt(entryProp.pointsEarned)
-    let totalNeeded =
-      totalPossible * (parseInt(entryTargetRef.current.value) / 100)
+    if (weightsContainProp[1]) {
+      for (const entry of entriesProp) {
+        if (entry.category === 'Quiz') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+        }
+      }
 
-    setPEState(totalNeeded - totalEarned)
+      quizPP = totalPossible
+
+      if (thisCategory === 'Quiz') {
+        totalEarned -= entryProp.pointsEarned
+      }
+      let categoryPercent = totalEarned / totalPossible
+
+      if (weightsProp[1] === 0) {
+        _gradePercent += categoryPercent * quizWeightProp
+      } else {
+        _gradePercent += categoryPercent * weightsProp[1]
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContainProp[2]) {
+      for (const entry of entriesProp) {
+        if (entry.category === 'Exam') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+        }
+      }
+
+      examPP = totalPossible
+
+      if (thisCategory === 'Exam') {
+        totalEarned -= entryProp.pointsEarned
+      }
+      let categoryPercent = totalEarned / totalPossible
+
+      if (weightsProp[2] === 0) {
+        _gradePercent += categoryPercent * examWeightProp
+      } else {
+        _gradePercent += categoryPercent * weightsProp[2]
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContainProp[3]) {
+      for (const entry of entriesProp) {
+        if (entry.category === 'Project') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+        }
+      }
+
+      projectPP = totalPossible
+      if (thisCategory === 'Project') {
+        totalEarned -= entryProp.pointsEarned
+      }
+      let categoryPercent = totalEarned / totalPossible
+
+      if (weightsProp[3] === 0) {
+        _gradePercent += categoryPercent * projectWeightProp
+      } else {
+        _gradePercent += categoryPercent * weightsProp[3]
+      }
+
+      totalEarned = 0
+      totalPossible = 0
+    }
+    if (weightsContainProp[4]) {
+      for (const entry of entriesProp) {
+        if (entry.category === 'Participation') {
+          totalEarned += entry.pointsEarned
+          totalPossible += entry.pointsPossible
+        }
+      }
+
+      participationPP = totalPossible
+      if (thisCategory === 'Participation') {
+        totalEarned -= entryProp.pointsEarned
+      }
+      let categoryPercent = totalEarned / totalPossible
+
+      if (weightsProp[4] === 0) {
+        _gradePercent += categoryPercent * participationWeightProp
+      } else {
+        _gradePercent += categoryPercent * weightsProp[4]
+      }
+      totalEarned = 0
+      totalPossible = 0
+    }
+
+    console.log(_gradePercent)
+    let percentNeeded =
+      parseInt(entryTargetRef.current.value) / 100 - _gradePercent
+
+    // console.log(percentNeeded)
+    console.log(examWeightProp)
+
+    if (thisCategory === 'Assignment') {
+      if (weightsProp[0] === 0) {
+        setPEState((percentNeeded / assignmentWeightProp) * assignmentPP)
+      } else {
+        setPEState((percentNeeded / weightsProp[0]) * assignmentPP)
+      }
+    }
+    if (thisCategory === 'Quiz') {
+      if (weightsProp[1] === 0) {
+        setPEState((percentNeeded / quizWeightProp) * quizPP)
+      } else {
+        setPEState((percentNeeded / weightsProp[1]) * quizPP)
+      }
+    }
+    if (thisCategory === 'Exam') {
+      if (weightsProp[2] === 0) {
+        setPEState((percentNeeded / examWeightProp) * examPP)
+      } else {
+        setPEState((percentNeeded / weightsProp[2]) * examPP)
+      }
+    }
+    if (thisCategory === 'Project') {
+      if (weightsProp[3] === 0) {
+        setPEState((percentNeeded / projectWeightProp) * projectPP)
+      } else {
+        setPEState((percentNeeded / weightsProp[3]) * projectPP)
+      }
+    }
+    if (thisCategory === 'Participation') {
+      if (weightsProp[4] === 0) {
+        setPEState((percentNeeded / participationWeightProp) * participationPP)
+      } else {
+        setPEState((percentNeeded / weightsProp[4]) * participationPP)
+      }
+    }
   }
 
   const handleOnClickEnd = () => {
