@@ -38,9 +38,9 @@ export default function Table({ tableProp }) {
     const e1 = new Entry(
       uuidv4(),
       'Assignment 1',
-      80,
+      85,
       100,
-      '98.00%',
+      '85.00%',
       'Assignment'
     )
     const e2 = new Entry(uuidv4(), 'Quiz 1', 8, 10, '80.00%', 'Quiz')
@@ -307,6 +307,9 @@ export default function Table({ tableProp }) {
       totalPossible = 0
     }
 
+    // console.log(_gradePercent)
+    setGradePercent(_gradePercent)
+
     if (_gradePercent < 0.6) setGradeLetter('F')
     if (_gradePercent >= 0.6) setGradeLetter('D')
     if (_gradePercent >= 0.67) setGradeLetter('D+')
@@ -319,7 +322,6 @@ export default function Table({ tableProp }) {
     if (_gradePercent >= 0.9) setGradeLetter('A-')
     if (_gradePercent >= 0.93) setGradeLetter('A')
     if (_gradePercent >= 0.97) setGradeLetter('A+')
-    setGradePercent(_gradePercent)
   }
 
   const handleDelete = (id) => {
@@ -329,6 +331,14 @@ export default function Table({ tableProp }) {
 
   const handleEdit = (id, newName, newPE, newPP, newCategory) => {
     if (newName === '' || newPE === '' || newPP === '') return
+    if (
+      newCategory !== 'Assignment' &&
+      newCategory !== 'Quiz' &&
+      newCategory !== 'Exam' &&
+      newCategory !== 'Project' &&
+      newCategory !== 'Participation'
+    )
+      return
     const newEntries = [...entries]
     const index = entries.findIndex((entry) => entry.id === id)
     const ne = new Entry(

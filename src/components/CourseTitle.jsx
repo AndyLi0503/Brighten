@@ -4,7 +4,7 @@ export default function CourseTitle() {
   return (
     <>
       <p className="text-blue-600 text-2xl underline decoration-double font-mono">
-        CS 18000 Grade Detail
+        Brighten
       </p>
     </>
   )

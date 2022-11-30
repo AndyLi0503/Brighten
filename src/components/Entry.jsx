@@ -18,6 +18,7 @@ function Entry({
   const [isPredicting, setIsPredicting] = useState(false)
   const [pointsEarnedState, setPEState] = useState()
   const [pointsPossibleState, setPPState] = useState()
+  const [actualPE, setActualPE] = useState()
   const entryNameRef = useRef()
   const entryPERef = useRef()
   const entryPPRef = useRef()
@@ -206,10 +207,12 @@ function Entry({
     }
 
     let percentNeeded =
-      parseInt(entryTargetRef.current.value) / 100 - _gradePercent
+      Number(entryTargetRef.current.value) / 100 - _gradePercent
 
+    // let actualPE
     if (thisCategory === 'Assignment') {
       if (weightsProp[0] === 0) {
+        setActualPE((percentNeeded / assignmentWeightProp) * assignmentPP)
         setPEState(
           (
             Math.round(
@@ -218,6 +221,7 @@ function Entry({
           ).toFixed(2)
         )
       } else {
+        setActualPE((percentNeeded / weightsProp[0]) * assignmentPP)
         setPEState(
           (
             Math.round((percentNeeded / weightsProp[0]) * examPP * 100) / 100
@@ -227,12 +231,14 @@ function Entry({
     }
     if (thisCategory === 'Quiz') {
       if (weightsProp[1] === 0) {
+        setActualPE((percentNeeded / quizWeightProp) * quizPP)
         setPEState(
           (
             Math.round((percentNeeded / quizWeightProp) * quizPP * 100) / 100
           ).toFixed(2)
         )
       } else {
+        setActualPE((percentNeeded / weightsProp[1]) * quizPP)
         setPEState(
           (
             Math.round((percentNeeded / weightsProp[1]) * quizPP * 100) / 100
@@ -242,12 +248,14 @@ function Entry({
     }
     if (thisCategory === 'Exam') {
       if (weightsProp[2] === 0) {
+        setActualPE((percentNeeded / examWeightProp) * examPP)
         setPEState(
           (
             Math.round((percentNeeded / examWeightProp) * examPP * 100) / 100
           ).toFixed(2)
         )
       } else {
+        setActualPE((percentNeeded / weightsProp[2]) * examPP)
         setPEState(
           (
             Math.round((percentNeeded / weightsProp[2]) * examPP * 100) / 100
@@ -257,6 +265,7 @@ function Entry({
     }
     if (thisCategory === 'Project') {
       if (weightsProp[3] === 0) {
+        setActualPE((percentNeeded / projectWeightProp) * projectPP)
         setPEState(
           (
             Math.round((percentNeeded / projectWeightProp) * projectPP * 100) /
@@ -264,6 +273,7 @@ function Entry({
           ).toFixed(2)
         )
       } else {
+        setActualPE((percentNeeded / weightsProp[3]) * projectPP)
         setPEState(
           (
             Math.round((percentNeeded / weightsProp[3]) * projectPP * 100) / 100
@@ -273,6 +283,7 @@ function Entry({
     }
     if (thisCategory === 'Participation') {
       if (weightsProp[4] === 0) {
+        setActualPE((percentNeeded / examWeightProp) * participationPP)
         setPEState(
           (
             Math.round(
@@ -281,6 +292,7 @@ function Entry({
           ).toFixed(2)
         )
       } else {
+        setActualPE((percentNeeded / weightsProp[4]) * participationPP)
         setPEState(
           (
             Math.round(
@@ -293,11 +305,7 @@ function Entry({
   }
 
   const handleOnClickEnd = () => {
-    handleEnd(
-      entryProp.id,
-      Number(pointsEarnedState),
-      parseInt(pointsPossibleState)
-    )
+    handleEnd(entryProp.id, Number(actualPE), parseInt(pointsPossibleState))
     setIsPredicting(false)
   }
 
@@ -387,7 +395,7 @@ function Entry({
     return (
       <tr className="font-mono">
         <td>{entryProp.name}</td>
-        <td>{entryProp.pointsEarned}</td>
+        <td>{(Math.round(entryProp.pointsEarned * 100) / 100).toFixed(2)}</td>
         <td>{entryProp.pointsPossible}</td>
         <td>{entryProp.percent}</td>
         <td>{entryProp.category}</td>
