@@ -5,4 +5,5 @@ Major Functionalities:
   2. Delete/edit specific grade entries
   3. Calculate weighted grades
   4. Predict points needed for a certain total grade percentage
+  
   ...
