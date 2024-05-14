@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
 import WeightsNote from '../components/WeightsNote'
+import { Button } from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
@@ -473,12 +474,12 @@ export default function Table({ tableProp }) {
           </tbody>
         </table>
       </div>
-      <button
+      <Button
         onClick={handleUpdateWeight}
-        className="bg-orange-300 hover:bg-orange-400 rounded-full"
+         className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Update
-      </button>
+      </Button>
       <WeightsNote />
 
       <div>
