@@ -5,7 +5,15 @@ import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
 import WeightsNote from '../components/WeightsNote'
-import { Button } from '@nextui-org/react'
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
@@ -427,6 +435,12 @@ export default function Table({ tableProp }) {
       ])
     }
   }
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+
+  const handleUpdateAndClose = () => {
+    handleUpdateWeight()
+    onClose()
+  }
 
   return (
     <>
@@ -476,10 +490,48 @@ export default function Table({ tableProp }) {
       </div>
       <Button
         onClick={handleUpdateWeight}
-         className="bg-orange-300 hover:bg-orange-400 rounded-full"
+        className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Update
       </Button>
+
+      <Button onPress={onOpen} className="max-w-fit">
+        Input Weights
+      </Button>
+      <Modal isOpen={isOpen} placement="top" onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Input Weights
+              </ModalHeader>
+              <ModalBody>
+                <p>1. No category weight is considered by default</p>
+                <p>2. Put in 0 if not considered in grading</p>
+                <p>3. Don't include percentage sign inside input box</p>
+                <p>
+                  (Example: put in "25" if a category is considered 25% of total
+                  grade)
+                </p>
+                <p>
+                  4. You shouldn't add an entry with an undefined category
+                  weight
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button onPress={onClose}>Cancel</Button>
+                <Button
+                  onClick={handleUpdateAndClose}
+                  color="primary"
+                  // className="bg-orange-300 hover:bg-orange-400 rounded-full"
+                >
+                  Update
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <WeightsNote />
 
       <div>

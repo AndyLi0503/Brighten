@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Select, SelectItem } from '@nextui-org/react'
 
 function Entry({
   entryProp,
@@ -310,6 +311,13 @@ function Entry({
   }
 
   if (isEditing && !isPredicting) {
+    const categories = [
+      'Assignment',
+      'Quiz',
+      'Exam',
+      'Project',
+      'Participation',
+    ]
     return (
       <tr>
         <td>
@@ -324,6 +332,17 @@ function Entry({
         <td></td>
         <td>
           <input ref={entryCategoryRef} type="text" />
+          {/* <Select
+            label="Category"
+            // value={selectedCategory}
+            // onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
+            ))}
+          </Select> */}
         </td>
         <td>
           <button

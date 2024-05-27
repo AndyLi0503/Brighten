@@ -14,7 +14,7 @@ function WeightsNote() {
   return (
     <div>
       <Button onPress={onOpen} className="max-w-fit">
-        Open Modal
+        Usage
       </Button>
       <Modal isOpen={isOpen} placement="top" onOpenChange={onOpenChange}>
         <ModalContent>
@@ -24,20 +24,20 @@ function WeightsNote() {
                 Tips
               </ModalHeader>
               <ModalBody>
-                <p className="font-mono">
+                <p>
                   1. No category weight is considered by default
                 </p>
-                <p className="font-mono">
+                <p>
                   2. Put in 0 if not considered in grading
                 </p>
-                <p className="font-mono">
+                <p>
                   3. Don't include percentage sign inside input box
                 </p>
-                <p className="font-mono">
+                <p>
                   (Example: put in "25" if a category is considered 25% of total
                   grade)
                 </p>
-                <p className="font-mono">
+                <p>
                   4. You shouldn't add an entry with an undefined category
                   weight
                 </p>
