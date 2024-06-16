@@ -488,12 +488,12 @@ export default function Table({ tableProp }) {
           </tbody>
         </table>
       </div>
-      <Button
+      {/* <Button
         onClick={handleUpdateWeight}
         className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Update
-      </Button>
+      </Button> */}
 
       <Button onPress={onOpen} className="max-w-fit">
         Input Weights
@@ -506,24 +506,48 @@ export default function Table({ tableProp }) {
                 Input Weights
               </ModalHeader>
               <ModalBody>
-                <p>1. No category weight is considered by default</p>
-                <p>2. Put in 0 if not considered in grading</p>
-                <p>3. Don't include percentage sign inside input box</p>
-                <p>
-                  (Example: put in "25" if a category is considered 25% of total
-                  grade)
-                </p>
-                <p>
-                  4. You shouldn't add an entry with an undefined category
-                  weight
-                </p>
+                <div>
+                  <table className="table-auto border-separate border-spacing-5 border">
+                    <thead className="text-center">
+                      <tr>
+                        <th className="table-header">Assignment</th>
+                        <th className="table-header">Quiz</th>
+                        <th className="table-header">Exam</th>
+                        <th className="table-header">Project</th>
+                        <th className="table-header">Participation</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-center">
+                      <tr>
+                        <td>
+                          <input ref={assignmentWeightRef} type="number" />
+                        </td>
+
+                        <td>
+                          <input ref={quizWeightRef} type="number" />
+                        </td>
+
+                        <td>
+                          <input ref={examWeightRef} type="number" />
+                        </td>
+
+                        <td>
+                          <input ref={projectWeightRef} type="number" />
+                        </td>
+
+                        <td>
+                          <input ref={participationWeightRef} type="number" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button onPress={onClose}>Cancel</Button>
                 <Button
                   onClick={handleUpdateAndClose}
                   color="primary"
-                  // className="bg-orange-300 hover:bg-orange-400 rounded-full"
                 >
                   Update
                 </Button>
