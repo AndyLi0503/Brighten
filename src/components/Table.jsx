@@ -5,15 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
 import WeightsNote from '../components/WeightsNote'
-import {
-  Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
@@ -435,12 +427,6 @@ export default function Table({ tableProp }) {
       ])
     }
   }
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-
-  const handleUpdateAndClose = () => {
-    handleUpdateWeight()
-    onClose()
-  }
 
   return (
     <>
@@ -488,74 +474,12 @@ export default function Table({ tableProp }) {
           </tbody>
         </table>
       </div>
-      {/* <Button
+      <Button
         onClick={handleUpdateWeight}
-        className="bg-orange-300 hover:bg-orange-400 rounded-full"
+         className="bg-orange-300 hover:bg-orange-400 rounded-full"
       >
         Update
-      </Button> */}
-
-      <Button onPress={onOpen} className="max-w-fit">
-        Input Weights
       </Button>
-      <Modal isOpen={isOpen} placement="top" onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Input Weights
-              </ModalHeader>
-              <ModalBody>
-                <div>
-                  <table className="table-auto border-separate border-spacing-5 border">
-                    <thead className="text-center">
-                      <tr>
-                        <th className="table-header">Assignment</th>
-                        <th className="table-header">Quiz</th>
-                        <th className="table-header">Exam</th>
-                        <th className="table-header">Project</th>
-                        <th className="table-header">Participation</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-center">
-                      <tr>
-                        <td>
-                          <input ref={assignmentWeightRef} type="number" />
-                        </td>
-
-                        <td>
-                          <input ref={quizWeightRef} type="number" />
-                        </td>
-
-                        <td>
-                          <input ref={examWeightRef} type="number" />
-                        </td>
-
-                        <td>
-                          <input ref={projectWeightRef} type="number" />
-                        </td>
-
-                        <td>
-                          <input ref={participationWeightRef} type="number" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button onPress={onClose}>Cancel</Button>
-                <Button
-                  onClick={handleUpdateAndClose}
-                  color="primary"
-                >
-                  Update
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
       <WeightsNote />
 
       <div>
