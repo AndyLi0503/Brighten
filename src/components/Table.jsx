@@ -5,7 +5,15 @@ import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
 import WeightsNote from '../components/WeightsNote'
-import { Button, CircularProgress, Card, CardBody, CardFooter, Chip } from '@nextui-org/react'
+import {
+  Button,
+  CircularProgress,
+  Card,
+  CardBody,
+  CardFooter,
+  Chip,
+  Tooltip,
+} from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
   const [gradePercent, setGradePercent] = useState(0)
@@ -432,17 +440,22 @@ export default function Table({ tableProp }) {
     <>
       <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
         <CardBody className="justify-center items-center pb-0">
-          <CircularProgress
-            classNames={{
-              svg: 'w-36 h-36 drop-shadow-md',
-              indicator: 'stroke-black',
-              track: 'stroke-black/10',
-              value: 'text-3xl font-semibold text-black',
-            }}
-            value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
-            strokeWidth={4}
-            showValueLabel={true}
-          />
+          <Tooltip
+            content={(gradePercent * 100).toFixed(2) + '%'}
+            placement="top"
+          >
+            <CircularProgress
+              classNames={{
+                svg: 'w-36 h-36 drop-shadow-md',
+                indicator: 'stroke-black',
+                track: 'stroke-black/10',
+                value: 'text-3xl font-semibold text-black',
+              }}
+              value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
+              strokeWidth={4}
+              showValueLabel={true}
+            />
+          </Tooltip>
         </CardBody>
         <CardFooter className="justify-center items-center pt-0">
           <Chip
@@ -456,13 +469,6 @@ export default function Table({ tableProp }) {
           </Chip>
         </CardFooter>
       </Card>
-
-      <p className="font-mono">
-        Overall Grade Percent:{' '}
-        {(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}%
-      </p>
-      <p className="font-mono">Overall Grade Letter: {gradeLetter} </p>
-      <br></br>
 
       <p className="font-mono">Input category weight for the course:</p>
       <div>
