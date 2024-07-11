@@ -465,10 +465,10 @@ export default function Table({ tableProp }) {
 
       <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
         <CardBody className="justify-center items-center pb-0">
-          <Tooltip
+          {/* <Tooltip
             content={(gradePercent * 100).toFixed(2) + '%'}
             placement="top"
-          >
+          > */}
             <CircularProgress
               classNames={{
                 svg: 'w-36 h-36 drop-shadow-md',
@@ -479,8 +479,9 @@ export default function Table({ tableProp }) {
               value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
               strokeWidth={4}
               showValueLabel={true}
+              formatOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
             />
-          </Tooltip>
+          {/* </Tooltip> */}
         </CardBody>
         <CardFooter className="justify-center items-center pt-0">
           <Chip
