@@ -13,7 +13,7 @@ function WeightsNote() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return (
     <div>
-      <Button onPress={onOpen} className="max-w-fit">
+      <Button onPress={onOpen} color="primary" variant="ghost">
         Usage
       </Button>
       <Modal isOpen={isOpen} placement="top" onOpenChange={onOpenChange}>

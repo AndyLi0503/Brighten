@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Select, SelectItem, Button } from '@nextui-org/react'
+import deleteIcon from '../icons/delete.jpg'
 
 function Entry({
   entryProp,
@@ -345,8 +346,17 @@ function Entry({
           </Select> */}
         </td>
         <td>
-          <Button onClick={handleOnClickX} variant="ghost" color="danger">
-            X
+          <Button
+            isIconOnly
+            onClick={handleOnClickX}
+            variant="ghost"
+            color="danger"
+          >
+            <img
+              src={deleteIcon}
+              alt="Delete Icon"
+              style={{ width: '26px', height: '26px' }}
+            />
           </Button>
         </td>
         <td>
@@ -373,8 +383,17 @@ function Entry({
         </td>
         <td className="font-mono">{entryProp.category}</td>
         <td>
-          <Button onClick={handleOnClickX} variant="ghost" color="danger">
-            X
+          <Button
+            isIconOnly
+            onClick={handleOnClickX}
+            variant="ghost"
+            color="danger"
+          >
+            <img
+              src={deleteIcon}
+              alt="Delete Icon"
+              style={{ width: '26px', height: '26px' }}
+            />
           </Button>
         </td>
         <td></td>
@@ -403,8 +422,17 @@ function Entry({
         <td>{entryProp.percent}</td>
         <td>{entryProp.category}</td>
         <td>
-          <Button onClick={handleOnClickX} variant="ghost" color="danger">
-            X
+          <Button
+            isIconOnly
+            onClick={handleOnClickX}
+            variant="ghost"
+            color="danger"
+          >
+            <img
+              src={deleteIcon}
+              alt="Delete Icon"
+              style={{ width: '26px', height: '26px' }}
+            />
           </Button>
         </td>
         <td>
@@ -413,7 +441,11 @@ function Entry({
           </Button>
         </td>
         <td>
-          <Button onClick={handleOnClickPredict} variant="ghost" color="warning">
+          <Button
+            onClick={handleOnClickPredict}
+            variant="ghost"
+            color="warning"
+          >
             Predict
           </Button>
         </td>

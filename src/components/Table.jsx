@@ -122,8 +122,8 @@ export default function Table({ tableProp }) {
       isCategoryWeightDefined = true
     }
 
-    if (name === '' || pe === '' || pp === '' || !isCategoryWeightDefined){
-      alert("New Entry Invalid");
+    if (name === '' || pe === '' || pp === '' || !isCategoryWeightDefined) {
+      alert('New Entry Invalid')
       return
     }
     setEntries((prevEntries) => {
@@ -428,6 +428,11 @@ export default function Table({ tableProp }) {
       participationWeight = parseInt(participationWeightRef.current.value) / 100
     }
 
+    if (total != 100) {
+      alert("Total doesn't equal to 100")
+      return
+    }
+
     if (
       !isAssignmentZero ||
       !isQuizZero ||
@@ -456,6 +461,8 @@ export default function Table({ tableProp }) {
 
   return (
     <>
+      <WeightsNote />
+
       <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
         <CardBody className="justify-center items-center pb-0">
           <Tooltip
@@ -504,34 +511,93 @@ export default function Table({ tableProp }) {
             <tr>
               <td>
                 <input ref={assignmentWeightRef} type="number" />
+                {/* <Input ref={assignmentWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={quizWeightRef} type="number" />
+                {/* <Input ref={quizWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={examWeightRef} type="number" />
+                {/* <Input ref={examWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={projectWeightRef} type="number" />
+                {/* <Input ref={projectWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={participationWeightRef} type="number" />
+                {/* <Input ref={participationWeightRef} type="number"></Input> */}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      {/* <Card className="max-w-[400px]">
+        <CardHeader>Weights Table</CardHeader>
+        <Divider />
+        <CardBody>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={assignmentWeightRef}
+            placeholder="Enter Assignment Weight"
+            label="Assignment Weight"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={quizWeightRef}
+            placeholder="Enter Quiz Weight"
+            label="Quiz Weight"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={examWeightRef}
+            placeholder="Enter Exam Weight"
+            label="Exam Weight"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={projectWeightRef}
+            placeholder="Enter Project Weight"
+            label="Project Weight"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={participationWeightRef}
+            placeholder="Enter Participation Weight"
+            label="Participation Weight"
+            type="number"
+          ></Input>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <Button onClick={handleUpdateWeight} color="primary" variant="ghost">
+            Update Weights
+          </Button>
+        </CardFooter>
+      </Card> */}
+
       <Button
         onClick={handleUpdateWeight}
-        className="bg-orange-300 hover:bg-orange-400 rounded-full"
+        color="primary"
+        variant="ghost"
       >
         Update
       </Button>
-      <WeightsNote />
 
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
@@ -625,20 +691,16 @@ export default function Table({ tableProp }) {
               <DropdownItem key="Participation">Participation</DropdownItem>
             </DropdownMenu>
           </Dropdown> */}
-
         </CardBody>
         <Divider />
         <CardFooter>
-          <Button onClick={handleAddEntry} color="primary" variant="ghost">Add Entry</Button>
+          <Button onClick={handleAddEntry} color="primary" variant="ghost">
+            Add Entry
+          </Button>
         </CardFooter>
       </Card>
 
-      <button
-        onClick={handleRevertInit}
-        className="bg-orange-300 hover:bg-orange-400 rounded-full"
-      >
-        Revert to Initial Entries
-      </button>
+      <Button onClick={handleRevertInit} color="danger" variant="ghost">Revert to Initial Entries</Button>
       <br></br>
       <br></br>
     </>
