@@ -9,10 +9,17 @@ import {
   Button,
   CircularProgress,
   Card,
+  CardHeader,
   CardBody,
   CardFooter,
   Chip,
+  Divider,
   Tooltip,
+  Input,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
@@ -115,8 +122,10 @@ export default function Table({ tableProp }) {
       isCategoryWeightDefined = true
     }
 
-    if (name === '' || pe === '' || pp === '' || !isCategoryWeightDefined)
+    if (name === '' || pe === '' || pp === '' || !isCategoryWeightDefined){
+      alert("New Entry Invalid");
       return
+    }
     setEntries((prevEntries) => {
       return [
         ...prevEntries,
@@ -436,6 +445,15 @@ export default function Table({ tableProp }) {
     }
   }
 
+  const [selectedKeys, setSelectedKeys] = React.useState(
+    new Set(['Select Category'])
+  )
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(', ').replaceAll('_', ' '),
+    [selectedKeys]
+  )
+
   return (
     <>
       <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
@@ -550,27 +568,71 @@ export default function Table({ tableProp }) {
       </div>
 
       <br></br>
+      <Card className="max-w-[400px]">
+        <CardHeader>Add New Entry</CardHeader>
+        <Divider />
+        <CardBody>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={entryNameRef}
+            placeholder="Enter new entry name"
+            label="Name"
+          ></Input>
 
-      <p className="font-mono">Name of added entry:</p>
-      <input ref={entryNameRef} type="text" autoComplete="off" />
-      <p className="font-mono">Points earned of entry:</p>
-      <input ref={entryPERef} type="number" />
-      <p className="font-mono">Points possible of entry:</p>
-      <input ref={entryPPRef} type="number" />
-      <p className="font-mono">Category of added entry:</p>
-      <input ref={entryCategoryRef} type="text" autoComplete="off" />
+          <Input
+            isClearable
+            variant="bordered"
+            ref={entryPERef}
+            placeholder="Enter points earned"
+            label="Points Earned"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={entryPPRef}
+            placeholder="Enter points earned"
+            label="Points Possible"
+            type="number"
+          ></Input>
+          <Input
+            isClearable
+            variant="bordered"
+            ref={entryCategoryRef}
+            placeholder="Enter new entry category"
+            label="Category"
+          ></Input>
 
-      <br></br>
-      <br></br>
+          {/* <Dropdown>
+            <DropdownTrigger>
+              <Button variant="bordered" className="capitalize">
+                {selectedValue}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Single selection example"
+              variant="flat"
+              disallowEmptySelection
+              selectionMode="single"
+              selectedKeys={selectedKeys}
+              onSelectionChange={setSelectedKeys}
+            >
+              <DropdownItem key="Assignment">Assignment</DropdownItem>
+              <DropdownItem key="Quiz">Quiz</DropdownItem>
+              <DropdownItem key="Exam">Exam</DropdownItem>
+              <DropdownItem key="Project">Project</DropdownItem>
+              <DropdownItem key="Participation">Participation</DropdownItem>
+            </DropdownMenu>
+          </Dropdown> */}
 
-      <button
-        onClick={handleAddEntry}
-        className="bg-orange-300 hover:bg-orange-400 rounded-full"
-      >
-        Add Entry
-      </button>
-      <br></br>
-      <br></br>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <Button onClick={handleAddEntry} color="primary" variant="ghost">Add Entry</Button>
+        </CardFooter>
+      </Card>
+
       <button
         onClick={handleRevertInit}
         className="bg-orange-300 hover:bg-orange-400 rounded-full"

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Select, SelectItem } from '@nextui-org/react'
+import { Select, SelectItem, Button } from '@nextui-org/react'
 
 function Entry({
   entryProp,
@@ -345,22 +345,14 @@ function Entry({
           </Select> */}
         </td>
         <td>
-          <button
-            onClick={handleOnClickX}
-            className="bg-red-400 hover:bg-red-700"
-          >
-            {' '}
-            X{' '}
-          </button>
+          <Button onClick={handleOnClickX} variant="ghost" color="danger">
+            X
+          </Button>
         </td>
         <td>
-          <button
-            onClick={handleOnClickSave}
-            className="bg-amber-400 hover:bg-amber-600 rounded-full"
-          >
-            {' '}
-            Save{' '}
-          </button>
+          <Button onClick={handleOnClickSave} variant="solid" color="warning">
+            Save
+          </Button>
         </td>
       </tr>
     )
@@ -381,23 +373,15 @@ function Entry({
         </td>
         <td className="font-mono">{entryProp.category}</td>
         <td>
-          <button
-            onClick={handleOnClickX}
-            className="bg-red-400 hover:bg-red-700"
-          >
-            {' '}
-            X{' '}
-          </button>
+          <Button onClick={handleOnClickX} variant="ghost" color="danger">
+            X
+          </Button>
         </td>
         <td></td>
         <td>
-          <button
-            onClick={handleOnClickEnd}
-            className="bg-yellow-200 hover:bg-yellow-400 rounded-full"
-          >
-            {' '}
-            End{' '}
-          </button>
+          <Button onClick={handleOnClickEnd} variant="solid" color="warning">
+            End
+          </Button>
         </td>
         <td className="font-mono">Target Total Percentage:</td>
         <td>
@@ -419,28 +403,19 @@ function Entry({
         <td>{entryProp.percent}</td>
         <td>{entryProp.category}</td>
         <td>
-          <button
-            onClick={handleOnClickX}
-            className="bg-red-400 hover:bg-red-700"
-          >
+          <Button onClick={handleOnClickX} variant="ghost" color="danger">
             X
-          </button>
+          </Button>
         </td>
         <td>
-          <button
-            onClick={handleOnClickEdit}
-            className="bg-amber-400 hover:bg-amber-600 rounded-full"
-          >
+          <Button onClick={handleOnClickEdit} variant="ghost" color="warning">
             Edit
-          </button>
+          </Button>
         </td>
         <td>
-          <button
-            onClick={handleOnClickPredict}
-            className="bg-yellow-200 hover:bg-yellow-400 rounded-full"
-          >
+          <Button onClick={handleOnClickPredict} variant="ghost" color="warning">
             Predict
-          </button>
+          </Button>
         </td>
       </tr>
     )
