@@ -4,7 +4,6 @@ import './Table.css'
 import { useEffect, useState, useRef } from 'react'
 import { Entry } from '../constants/index'
 import { v4 as uuidv4 } from 'uuid'
-import WeightsNote from '../components/WeightsNote'
 import {
   Button,
   CircularProgress,
@@ -14,12 +13,12 @@ import {
   CardFooter,
   Chip,
   Divider,
-  Tooltip,
   Input,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  
 } from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
@@ -461,26 +460,27 @@ export default function Table({ tableProp }) {
 
   return (
     <>
-      <WeightsNote />
-
       <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
         <CardBody className="justify-center items-center pb-0">
           {/* <Tooltip
             content={(gradePercent * 100).toFixed(2) + '%'}
             placement="top"
           > */}
-            <CircularProgress
-              classNames={{
-                svg: 'w-36 h-36 drop-shadow-md',
-                indicator: 'stroke-black',
-                track: 'stroke-black/10',
-                value: 'text-3xl font-semibold text-black',
-              }}
-              value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
-              strokeWidth={4}
-              showValueLabel={true}
-              formatOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-            />
+          <CircularProgress
+            classNames={{
+              svg: 'w-36 h-36 drop-shadow-md',
+              indicator: 'stroke-black',
+              track: 'stroke-black/10',
+              value: 'text-3xl font-semibold text-black',
+            }}
+            value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
+            strokeWidth={4}
+            showValueLabel={true}
+            formatOptions={{
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }}
+          />
           {/* </Tooltip> */}
         </CardBody>
         <CardFooter className="justify-center items-center pt-0">
@@ -496,7 +496,7 @@ export default function Table({ tableProp }) {
         </CardFooter>
       </Card>
 
-      <p className="font-mono">Input category weight for the course:</p>
+      {/* <p className="font-mono">Input category weight for the course:</p>
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
           <thead className="text-center">
@@ -512,34 +512,30 @@ export default function Table({ tableProp }) {
             <tr>
               <td>
                 <input ref={assignmentWeightRef} type="number" />
-                {/* <Input ref={assignmentWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={quizWeightRef} type="number" />
-                {/* <Input ref={quizWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={examWeightRef} type="number" />
-                {/* <Input ref={examWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={projectWeightRef} type="number" />
-                {/* <Input ref={projectWeightRef} type="number"></Input> */}
               </td>
 
               <td>
                 <input ref={participationWeightRef} type="number" />
-                {/* <Input ref={participationWeightRef} type="number"></Input> */}
               </td>
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
+      <br></br>
 
-      {/* <Card className="max-w-[400px]">
+      <Card className="max-w-[400px]">
         <CardHeader>Weights Table</CardHeader>
         <Divider />
         <CardBody>
@@ -590,15 +586,15 @@ export default function Table({ tableProp }) {
             Update Weights
           </Button>
         </CardFooter>
-      </Card> */}
+      </Card>
 
-      <Button
+      {/* <Button
         onClick={handleUpdateWeight}
         color="primary"
         variant="ghost"
       >
         Update
-      </Button>
+      </Button> */}
 
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
@@ -701,7 +697,9 @@ export default function Table({ tableProp }) {
         </CardFooter>
       </Card>
 
-      <Button onClick={handleRevertInit} color="danger" variant="ghost">Revert to Initial Entries</Button>
+      <Button onClick={handleRevertInit} color="danger" variant="ghost">
+        Revert to Initial Entries
+      </Button>
       <br></br>
       <br></br>
     </>

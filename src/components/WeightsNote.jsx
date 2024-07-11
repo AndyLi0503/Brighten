@@ -7,15 +7,16 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Link,
 } from '@nextui-org/react'
 
 function WeightsNote() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return (
     <div>
-      <Button onPress={onOpen} color="primary" variant="ghost">
+      <Link onPress={onOpen} isBlock color="primary" underline="hover">
         Usage
-      </Button>
+      </Link>
       <Modal isOpen={isOpen} placement="top" onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
