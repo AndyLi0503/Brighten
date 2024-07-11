@@ -10,9 +10,9 @@ import WeightsNote from '../components/WeightsNote'
 export default function CourseTitle() {
   return (
     <>
-      <Navbar>
+      <Navbar shouldHideOnScroll>
         <NavbarBrand>
-          <p className="text-blue-600 text-2xl underline decoration-double font-mono">
+          <p className="text-blue-600 text-2xl decoration-double">
             Brighten
           </p>
         </NavbarBrand>

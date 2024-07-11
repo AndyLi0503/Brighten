@@ -18,7 +18,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  
 } from '@nextui-org/react'
 
 export default function Table({ tableProp }) {
@@ -460,43 +459,41 @@ export default function Table({ tableProp }) {
 
   return (
     <>
-      <Card className="w-[240px] h-[240px] border-none bg-gradient-to-br from-white to-gray-200">
-        <CardBody className="justify-center items-center pb-0">
-          {/* <Tooltip
-            content={(gradePercent * 100).toFixed(2) + '%'}
-            placement="top"
-          > */}
-          <CircularProgress
-            classNames={{
-              svg: 'w-36 h-36 drop-shadow-md',
-              indicator: 'stroke-black',
-              track: 'stroke-black/10',
-              value: 'text-3xl font-semibold text-black',
-            }}
-            value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
-            strokeWidth={4}
-            showValueLabel={true}
-            formatOptions={{
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            }}
-          />
-          {/* </Tooltip> */}
-        </CardBody>
-        <CardFooter className="justify-center items-center pt-0">
-          <Chip
-            classNames={{
-              base: 'border-1 border-black/10',
-              content: 'text-black text-small font-semibold',
-            }}
-            variant="bordered"
-          >
-            Grade Letter: {gradeLetter}
-          </Chip>
-        </CardFooter>
-      </Card>
+      <div className="flex h-screen">
+        <div className="w-1/4 overflow-y-scroll">
+          <br></br>
+          <Card className="w-[400px] h-[400px] justify-center border-none bg-gradient-to-br from-white to-gray-250">
+            <CardBody className="justify-center items-center pb-0">
+              <CircularProgress
+                classNames={{
+                  svg: 'w-80 h-80 drop-shadow-md',
+                  indicator: 'stroke-black',
+                  track: 'stroke-black/10',
+                  value: 'text-5xl font-semibold text-black',
+                }}
+                value={(Math.round(gradePercent * 100 * 100) / 100).toFixed(2)}
+                strokeWidth={4}
+                showValueLabel={true}
+                formatOptions={{
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }}
+              />
+            </CardBody>
+            <CardFooter className="justify-center items-center pt-0">
+              <Chip
+                classNames={{
+                  base: 'border-1 border-black/10',
+                  content: 'text-black text-small font-semibold',
+                }}
+                variant="bordered"
+              >
+                Grade Letter: {gradeLetter}
+              </Chip>
+            </CardFooter>
+          </Card>
 
-      {/* <p className="font-mono">Input category weight for the course:</p>
+          {/* <p className="font-mono">Input category weight for the course:</p>
       <div>
         <table className="table-auto border-separate border-spacing-5 border">
           <thead className="text-center">
@@ -533,141 +530,111 @@ export default function Table({ tableProp }) {
           </tbody>
         </table>
       </div> */}
-      <br></br>
 
-      <Card className="max-w-[400px]">
-        <CardHeader>Weights Table</CardHeader>
-        <Divider />
-        <CardBody>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={assignmentWeightRef}
-            placeholder="Enter Assignment Weight"
-            label="Assignment Weight"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={quizWeightRef}
-            placeholder="Enter Quiz Weight"
-            label="Quiz Weight"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={examWeightRef}
-            placeholder="Enter Exam Weight"
-            label="Exam Weight"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={projectWeightRef}
-            placeholder="Enter Project Weight"
-            label="Project Weight"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={participationWeightRef}
-            placeholder="Enter Participation Weight"
-            label="Participation Weight"
-            type="number"
-          ></Input>
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <Button onClick={handleUpdateWeight} color="primary" variant="ghost">
-            Update Weights
-          </Button>
-        </CardFooter>
-      </Card>
+          <br></br>
 
-      {/* <Button
+          <Card className="max-w-[400px]">
+            <CardHeader>Weights Table</CardHeader>
+            <Divider />
+            <CardBody>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={assignmentWeightRef}
+                placeholder="Enter Assignment Weight"
+                label="Assignment Weight"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={quizWeightRef}
+                placeholder="Enter Quiz Weight"
+                label="Quiz Weight"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={examWeightRef}
+                placeholder="Enter Exam Weight"
+                label="Exam Weight"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={projectWeightRef}
+                placeholder="Enter Project Weight"
+                label="Project Weight"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={participationWeightRef}
+                placeholder="Enter Participation Weight"
+                label="Participation Weight"
+                type="number"
+              ></Input>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <Button
+                onClick={handleUpdateWeight}
+                color="primary"
+                variant="ghost"
+              >
+                Update Weights
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* <Button
         onClick={handleUpdateWeight}
         color="primary"
         variant="ghost"
       >
         Update
       </Button> */}
+          <br></br>
+          <Card className="max-w-[400px]">
+            <CardHeader>Add New Entry</CardHeader>
+            <Divider />
+            <CardBody>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={entryNameRef}
+                placeholder="Enter new entry name"
+                label="Name"
+              ></Input>
 
-      <div>
-        <table className="table-auto border-separate border-spacing-5 border">
-          <thead className="text-center">
-            <tr>
-              <th className="table-header">Name</th>
-              <th className="table-header">Points Earned</th>
-              <th className="table-header">Points Possible</th>
-              <th className="table-header">Percent</th>
-              <th className="table-header">Category</th>
-            </tr>
-          </thead>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={entryPERef}
+                placeholder="Enter points earned"
+                label="Points Earned"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={entryPPRef}
+                placeholder="Enter points earned"
+                label="Points Possible"
+                type="number"
+              ></Input>
+              <Input
+                isClearable
+                variant="bordered"
+                ref={entryCategoryRef}
+                placeholder="Enter new entry category"
+                label="Category"
+              ></Input>
 
-          <tbody className="text-center">
-            {entries.map((entryObject) => (
-              <EntryComponent
-                entryProp={entryObject}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-                handleEnd={handleEnd}
-                key={entryObject.id}
-                entriesProp={entries}
-                weightsProp={weights}
-                weightsContainProp={weightsContain}
-                assignmentWeightProp={assignmentWeight}
-                quizWeightProp={quizWeight}
-                examWeightProp={examWeight}
-                projectWeightProp={projectWeight}
-                participationWeightProp={participationWeight}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <br></br>
-      <Card className="max-w-[400px]">
-        <CardHeader>Add New Entry</CardHeader>
-        <Divider />
-        <CardBody>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={entryNameRef}
-            placeholder="Enter new entry name"
-            label="Name"
-          ></Input>
-
-          <Input
-            isClearable
-            variant="bordered"
-            ref={entryPERef}
-            placeholder="Enter points earned"
-            label="Points Earned"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={entryPPRef}
-            placeholder="Enter points earned"
-            label="Points Possible"
-            type="number"
-          ></Input>
-          <Input
-            isClearable
-            variant="bordered"
-            ref={entryCategoryRef}
-            placeholder="Enter new entry category"
-            label="Category"
-          ></Input>
-
-          {/* <Dropdown>
+              {/* <Dropdown>
             <DropdownTrigger>
               <Button variant="bordered" className="capitalize">
                 {selectedValue}
@@ -688,20 +655,59 @@ export default function Table({ tableProp }) {
               <DropdownItem key="Participation">Participation</DropdownItem>
             </DropdownMenu>
           </Dropdown> */}
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <Button onClick={handleAddEntry} color="primary" variant="ghost">
-            Add Entry
-          </Button>
-        </CardFooter>
-      </Card>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <Button onClick={handleAddEntry} color="primary" variant="ghost">
+                Add Entry
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
 
-      <Button onClick={handleRevertInit} color="danger" variant="ghost">
-        Revert to Initial Entries
-      </Button>
-      <br></br>
-      <br></br>
+        <div className="w-3/4 overflow-y-scroll">
+          <br></br>
+          <table className="table-auto border-separate border-spacing-5 border">
+            <thead className="text-center">
+              <tr>
+                <th className="table-header">Name</th>
+                <th className="table-header">Points Earned</th>
+                <th className="table-header">Points Possible</th>
+                <th className="table-header">Percent</th>
+                <th className="table-header">Category</th>
+              </tr>
+            </thead>
+
+            <tbody className="text-center">
+              {entries.map((entryObject) => (
+                <EntryComponent
+                  entryProp={entryObject}
+                  handleDelete={handleDelete}
+                  handleEdit={handleEdit}
+                  handleEnd={handleEnd}
+                  key={entryObject.id}
+                  entriesProp={entries}
+                  weightsProp={weights}
+                  weightsContainProp={weightsContain}
+                  assignmentWeightProp={assignmentWeight}
+                  quizWeightProp={quizWeight}
+                  examWeightProp={examWeight}
+                  projectWeightProp={projectWeight}
+                  participationWeightProp={participationWeight}
+                />
+              ))}
+            </tbody>
+            <Button onClick={handleRevertInit} color="danger" variant="ghost">
+              Revert to Initial Entries
+            </Button>
+          </table>
+        </div>
+
+        <br></br>
+
+        <br></br>
+        <br></br>
+      </div>
     </>
   )
 }

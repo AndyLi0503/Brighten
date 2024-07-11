@@ -22,7 +22,7 @@ function WeightsNote() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Tips
+                Usage
               </ModalHeader>
               <ModalBody>
                 <p>

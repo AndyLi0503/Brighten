@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <NextUIProvider>
-        <SingleCourseSummary />
+          <SingleCourseSummary />
       </NextUIProvider>
     </>
   )
